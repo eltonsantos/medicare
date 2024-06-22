@@ -1,5 +1,6 @@
 class MedicinesController < ApplicationController
   before_action :set_medicine, only: %i[ show edit update destroy ]
+  before_action :set_paper_trail_whodunnit
 
   # GET /medicines
   def index
@@ -43,6 +44,14 @@ class MedicinesController < ApplicationController
   def destroy
     @medicine.destroy!
     redirect_to medicines_url, notice: "Medicine was successfully destroyed.", status: :see_other
+  end
+
+  def activities
+    @activities = PaperTrail::Version.where(item_type: "Medicine").order(created_at: :desc)
+  end
+
+  def set_paper_trail_whodunnit
+    PaperTrail.request.whodunnit = current_user.id if current_user
   end
 
   private
