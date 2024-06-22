@@ -1,24 +1,26 @@
-<%= form_with(model: medicine, class: "contents") do |form| %>
-  <% if medicine.errors.any? %>
+<%= simple_form_for(@medicine, html: { class: "contents" }) do |form| %>
+  <% if @medicine.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(medicine.errors.count, "error") %> prohibited this medicine from being saved:</h2>
+      <h2><%= pluralize(@medicine.errors.count, "error") %> prohibited this medicine from being saved:</h2>
 
       <ul>
-        <% medicine.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+        <% @medicine.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
   <div class="my-5">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.input :name, label: "Nome", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
   </div>
 
   <div class="my-5">
-    <%= form.label :quantity %>
-    <%= form.number_field :quantity, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.input :unit, as: :integer, label: "Unit", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+  </div>
+
+  <div class="my-5">
+    <%= form.input :quantity, as: :integer, label: "Quantity", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
   </div>
 
   <div class="my-5">
@@ -27,13 +29,11 @@
   </div>
 
   <div class="my-5">
-    <%= form.label :medicine_insert %>
-    <%= form.text_area :medicine_insert, rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.input :medicine_insert, as: :text, label: "Medicine Insert", input_html: { rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
   </div>
 
   <div class="my-5">
-    <%= form.label :used_to %>
-    <%= form.text_field :used_to, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.input :used_to, label: "Used To", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
   </div>
 
   <div class="my-5">
@@ -42,11 +42,10 @@
   </div>
 
   <div class="my-5">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.association :symptoms, as: :check_boxes, collection: Symptom.all, label: "Sintomas" %>
   </div>
 
   <div class="inline">
-    <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.button :submit, "Save", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>

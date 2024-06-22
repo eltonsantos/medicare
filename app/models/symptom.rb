@@ -1,3 +1,4 @@
 class Symptom < ApplicationRecord
-  belongs_to :user
+  has_many :medicine_symptoms, dependent: :destroy
+  has_many :medicines, through: :medicine_symptoms
 end
