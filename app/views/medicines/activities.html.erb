@@ -41,7 +41,7 @@
               </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900"><%= activity.object_changes %></div>
+              <div class="text-sm text-gray-900"><%= format_changes(activity.object_changes, activity.event) %></div>
             </td>
           </tr>
         <% end %>
