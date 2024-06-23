@@ -9,6 +9,12 @@ class MedicinesController < ApplicationController
 
   # GET /medicines/1
   def show
+    @medicine = Medicine.find(params[:id])
+    respond_to do |format|
+      format.html { render(:show) }
+      format.json { render(json: @medicine) }
+      format.turbo_stream { render(:show) }
+    end
   end
 
   # GET /medicines/new

@@ -63,6 +63,7 @@
             <%= lucide_icon('arrow-left', class: 'h-6 w-6') %>
           </button>
           <%= yield %>
+          <%= turbo_frame_tag "modal", target: "_top" %>
         </main>
       </div>
     <% else %>
