@@ -26,13 +26,13 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
               <%= link_to symptom, class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer" do %>
-                <%= lucide_icon('eye', class: 'inline-block ml-1 text-blue-600 cursor-pointer') %>
+                <%= lucide_icon('eye', class: 'inline-block text-blue-600 cursor-pointer') %>
               <% end %>
               <%= link_to edit_symptom_path(symptom), class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer" do %>
-                <%= lucide_icon('file-pen-line', class: 'inline-block ml-2 text-blue-600 cursor-pointer') %>
+                <%= lucide_icon('file-pen-line', class: 'inline-block text-blue-600 cursor-pointer') %>
               <% end %>
               <%= link_to symptom, method: :delete, class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer" do %>
-                <%= lucide_icon('circle-x', class: 'inline-block ml-2 text-red-600 cursor-pointer') %>
+                <%= lucide_icon('circle-x', class: 'inline-block text-red-600 cursor-pointer') %>
               <% end %>
             </td>
           </tr>

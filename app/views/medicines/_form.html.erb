@@ -16,28 +16,36 @@
   </div>
 
   <div class="my-5">
-    <%= form.input :unit, as: :integer, label: "Unit", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+    <%= form.input :unit, as: :integer, label: "Unidade", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
   </div>
 
   <div class="my-5">
-    <%= form.input :quantity, as: :integer, label: "Quantity", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+    <%= form.input :is_liquid, as: :radio_buttons, label: "É liquido?", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" } %>
   </div>
 
   <div class="my-5">
-    <%= form.label :medicine_validity %>
+    <%= form.input :quantity, as: :integer, label: "Quantidade", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+  </div>
+
+  <div class="my-5">
+    <%= form.input :description, as: :text, label: "Descrição", input_html: { rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :medicine_validity, "Validade" %>
     <%= form.date_field :medicine_validity, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
   <div class="my-5">
-    <%= form.input :medicine_insert, as: :text, label: "Medicine Insert", input_html: { rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+    <%= form.input :medicine_insert, as: :text, label: "Bula", input_html: { rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
   </div>
 
   <div class="my-5">
-    <%= form.input :used_to, label: "Used To", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+    <%= form.input :used_to, label: "Usado para", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
   </div>
 
   <div class="my-5">
-    <%= form.label :purchase_date %>
+    <%= form.label :purchase_date, "Data de compra" %>
     <%= form.date_field :purchase_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
@@ -46,6 +54,6 @@
   </div>
 
   <div class="inline">
-    <%= form.button :submit, "Save", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.button :submit, "Cadastrar", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>

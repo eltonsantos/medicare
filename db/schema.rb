@@ -54,17 +54,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_22_204247) do
   create_table "medicines", force: :cascade do |t|
     t.string "name"
     t.integer "unit"
+    t.boolean "is_liquid", default: false
     t.integer "quantity"
+    t.text "description"
     t.date "medicine_validity"
     t.text "medicine_insert"
     t.string "used_to"
     t.date "purchase_date"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_medicines_on_user_id"
   end
 
   create_table "symptoms", force: :cascade do |t|
     t.string "name"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -98,4 +103,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_22_204247) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "medicine_symptoms", "medicines"
   add_foreign_key "medicine_symptoms", "symptoms"
+  add_foreign_key "medicines", "users"
 end

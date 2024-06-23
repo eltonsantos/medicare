@@ -2,6 +2,7 @@ class CreateSymptoms < ActiveRecord::Migration[7.1]
   def change
     create_table :symptoms do |t|
       t.string :name
+      t.text :description
 
       t.timestamps
     end

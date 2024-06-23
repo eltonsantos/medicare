@@ -9,10 +9,8 @@ class MedicinesController < ApplicationController
 
   # GET /medicines/1
   def show
-    @medicine = Medicine.find(params[:id])
     respond_to do |format|
       format.html { render(:show) }
-      format.json { render(json: @medicine) }
       format.turbo_stream { render(:show) }
     end
   end
@@ -28,10 +26,10 @@ class MedicinesController < ApplicationController
 
   # POST /medicines
   def create
-    @medicine = Medicine.new(medicine_params)
+    @medicine = current_user.medicines.new(medicine_params)
 
     if @medicine.save
-      redirect_to @medicine, notice: "Medicine was successfully created."
+      redirect_to medicines_url, notice: "Medicine was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -40,7 +38,7 @@ class MedicinesController < ApplicationController
   # PATCH/PUT /medicines/1
   def update
     if @medicine.update(medicine_params)
-      redirect_to @medicine, notice: "Medicine was successfully updated.", status: :see_other
+      redirect_to medicines_url, notice: "Medicine was successfully updated.", status: :see_other
     else
       render :edit, status: :unprocessable_entity
     end
@@ -68,6 +66,6 @@ class MedicinesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def medicine_params
-      params.require(:medicine).permit(:name, :unit, :quantity, :medicine_validity, :medicine_insert, :used_to, :purchase_date)
+      params.require(:medicine).permit(:name, :unit, :is_liquid, :quantity, :description, :medicine_validity, :medicine_insert, :used_to, :purchase_date, :user_id)
     end
 end

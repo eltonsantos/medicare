@@ -2,32 +2,46 @@
   <div class="w-full bg-white p-2">
     <div class="space-y-4">
       <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1">Name:</strong>
+        <strong class="block font-medium mb-1">Nome:</strong>
         <p class="text-gray-700"><%= @medicine.name %></p>
       </div>
       <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1">Unit:</strong>
+        <strong class="block font-medium mb-1">Unidade:</strong>
         <p class="text-gray-700"><%= @medicine.unit %></p>
       </div>
       <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1">Quantity:</strong>
+        <strong class="block font-medium mb-1">É líquido?</strong>
+        <p class="text-gray-700">
+          <% if @medicine.is_liquid %>
+            Sim
+          <% else %>
+            Não
+          <% end %>
+        </p>
+      </div>
+      <div class="border-b border-gray-200 pb-2">
+        <strong class="block font-medium mb-1">Quantidade:</strong>
         <p class="text-gray-700"><%= @medicine.quantity %></p>
       </div>
       <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1">Medicine validity:</strong>
-        <p class="text-gray-700"><%= @medicine.medicine_validity %></p>
+        <strong class="block font-medium mb-1">Descrição:</strong>
+        <p class="text-gray-700"><%= @medicine.description %></p>
       </div>
       <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1">Medicine insert:</strong>
+        <strong class="block font-medium mb-1">Validade:</strong>
+        <p class="text-gray-700"><%= @medicine.medicine_validity.strftime("%d/%m/%Y") %></p>
+      </div>
+      <div class="border-b border-gray-200 pb-2">
+        <strong class="block font-medium mb-1">Bula:</strong>
         <p class="text-gray-700"><%= @medicine.medicine_insert %></p>
       </div>
       <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1">Used to:</strong>
+        <strong class="block font-medium mb-1">Usado para:</strong>
         <p class="text-gray-700"><%= @medicine.used_to %></p>
       </div>
       <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1">Purchase date:</strong>
-        <p class="text-gray-700"><%= @medicine.purchase_date %></p>
+        <strong class="block font-medium mb-1">Data da compra:</strong>
+        <p class="text-gray-700"><%= @medicine.purchase_date.strftime("%d/%m/%Y") %></p>
       </div>
     </div>
   </div>

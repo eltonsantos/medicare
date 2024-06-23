@@ -53,6 +53,6 @@ class SymptomsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def symptom_params
-      params.require(:symptom).permit(:name)
+      params.require(:symptom).permit(:name, :description)
     end
 end
