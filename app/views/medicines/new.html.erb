@@ -1,11 +1,7 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl text-blue-700 mb-6">Novo remédio</h1>
-
-  <div class="bg-white shadow rounded-lg p-6">
-    <%= render "form", medicine: @medicine %>
-
-    <div class="mt-6">
-      <%= link_to "Back to medicines", medicines_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+<%= render "modal", title: "Cadastrar novo remédio" do %>
+  <div class="mx-auto w-full">
+    <div class="bg-white">
+      <%= render "form", medicine: @medicine %>
     </div>
   </div>
-</div>
+<% end %>

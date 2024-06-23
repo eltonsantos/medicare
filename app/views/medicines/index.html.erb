@@ -6,7 +6,7 @@
 
 <div class="flex justify-between items-center mb-6">
   <h1 class="font-bold text-4xl text-blue-500">Remédios</h1>
-  <%= link_to "Cadastrar remédio", new_medicine_path, class: "rounded-lg py-3 px-5 bg-blue-400 hover:bg-blue-500 text-white block font-medium" %>
+  <%= link_to "Cadastrar remédio", new_medicine_path, class: "rounded-lg py-3 px-5 bg-blue-400 hover:bg-blue-500 text-white block font-medium", data: { turbo_frame: "modal" } %>
 </div>
 
 <div id="medicines" class="w-full">
@@ -19,9 +19,12 @@
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">É liquido?</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantidade</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Validade</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bula</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sintomas</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usado para</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comprado em</th>
+          <% if current_user.role == 'admin' %>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuário</th>
+          <% end %>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
         </tr>
       </thead>
@@ -51,7 +54,13 @@
               <div class="text-sm text-gray-900"><%= medicine.medicine_validity.strftime("%d/%m/%Y") %></div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900"><%= medicine.medicine_insert %></div>
+              <div class="text-sm text-gray-900">
+                <% medicine.symptoms.each do |symptom| %>
+                  <span class="inline-block bg-yellow-400 text-white text-sm px-3 py-1 rounded-md">
+                    <%= symptom.name %>
+                  </span>
+                <% end %>
+              </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm text-gray-900"><%= medicine.used_to %></div>
@@ -59,6 +68,11 @@
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm text-gray-900"><%= medicine.purchase_date.strftime("%d/%m/%Y") %></div>
             </td>
+            <% if current_user.role == 'admin' %>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900"><%= medicine.user.name %></div>
+              </td>
+            <% end %>
             <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
               <%= link_to medicine, class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer", data: { turbo_frame: "modal" } do %>
                 <%= lucide_icon('eye', class: 'inline-block text-blue-600 cursor-pointer') %>

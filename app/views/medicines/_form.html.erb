@@ -50,10 +50,10 @@
   </div>
 
   <div class="my-5">
-    <%= form.association :symptoms, as: :check_boxes, collection: Symptom.all, label: "Sintomas" %>
+    <%= form.association :symptoms, as: :check_boxes, collection: Symptom.all, label: "Sintomas", checked: @medicine.symptom_ids %>
   </div>
 
   <div class="inline">
-    <%= form.button :submit, "Cadastrar", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.button :submit, @medicine.new_record? ? "Cadastrar" : "Editar", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>

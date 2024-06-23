@@ -49,7 +49,7 @@
             <%= lucide_icon('sun', class: 'h-6 w-6 inline-block hidden dark:block') %>
           </button>
           <div class="flex items-center space-x-4">   
-            <span class="text-slate-700 dark:text-white">Olá, <%= current_user.email %></span>
+            <span class="text-slate-700 dark:text-white">Olá, <%= current_user.name %> (<%= current_user.email %>)</span>
             <%= form_tag destroy_user_session_path, method: :delete, class: "inline" do %>
               <button type="submit" class="text-slate-400 hover:text-slate-600 dark:text-white flex items-center space-x-2">
                 <%= lucide_icon('log-out', class: 'h-6 w-6 inline-block') %>
