@@ -45,11 +45,6 @@
   </div>
 
   <div class="my-5">
-    <%= form.label :purchase_date, "Data de compra" %>
-    <%= form.date_field :purchase_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
     <%= form.association :symptoms, as: :check_boxes, collection: Symptom.all, label: "Sintomas", checked: @medicine.symptom_ids %>
   </div>
 

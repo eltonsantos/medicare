@@ -1,0 +1,62 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold text-center mb-6 text-blue-600">Editar Conta</h2>
+
+    <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      
+      <% if resource.errors.any? %>
+        <div id="error_explanation" data-turbo-cache="false" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+          <h2 class="text-lg font-semibold">
+            <%= I18n.t("errors.messages.not_saved",
+                       count: resource.errors.count,
+                       resource: resource.class.model_name.human.downcase) %>
+          </h2>
+          <ul class="list-disc pl-5 mt-2">
+            <% resource.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="space-y-4">
+        <div>
+          <%= f.label :email, "E-mail", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.input_field :email, required: true, autofocus: true, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+        </div>
+        
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <p class="text-sm text-gray-500">Aguardando confirmação para: <%= resource.unconfirmed_email %></p>
+        <% end %>
+        
+        <div>
+          <%= f.label :password, "Nova Senha", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.input_field :password, required: false, input_html: { autocomplete: "new-password" }, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <%= f.hint "Deixe em branco se não quiser mudar" %>
+        </div>
+        <div>
+          <%= f.label :password_confirmation, "Confirme a Nova Senha", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.input_field :password_confirmation, required: false, input_html: { autocomplete: "new-password" }, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+        </div>
+        <div>
+          <%= f.label :current_password, "Senha Atual", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.input_field :current_password, required: true, input_html: { autocomplete: "current-password" }, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <%= f.hint "Necessário para confirmar as mudanças" %>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <%= f.button :submit, "Atualizar", class: "w-full bg-blue-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+      </div>
+    <% end %>
+
+    <h3 class="text-center text-lg font-medium text-gray-700 mt-6">Cancelar Conta</h3>
+    <div class="text-center mt-2">
+      <%= button_to "Cancelar minha conta", registration_path(resource_name), data: { confirm: "Tem certeza?", turbo_confirm: "Tem certeza?" }, method: :delete, class: "text-red-600 hover:underline" %>
+    </div>
+
+    <div class="mt-4 text-center">
+      <%= link_to "Voltar", :back, class: "text-blue-600 hover:underline" %>
+    </div>
+  </div>
+</div>

@@ -11,7 +11,6 @@ module MedicinesHelper
         medicine_validity: "Validade",
         medicine_insert: "Bula",
         used_to: "Usado para",
-        purchase_date: "Data de compra",
         created_at: "Criado em",
         updated_at: "Atualizado em"
       }

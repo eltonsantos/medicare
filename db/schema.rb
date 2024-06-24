@@ -60,7 +60,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_22_204247) do
     t.date "medicine_validity"
     t.text "medicine_insert"
     t.string "used_to"
-    t.date "purchase_date"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -1,0 +1,46 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold text-center mb-6 text-blue-600">Mudar sua senha</h2>
+
+    <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+      
+      <% if resource.errors.any? %>
+        <div id="error_explanation" data-turbo-cache="false" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+          <h2 class="text-lg font-semibold">
+            <%= I18n.t("errors.messages.not_saved",
+                       count: resource.errors.count,
+                       resource: resource.class.model_name.human.downcase) %>
+          </h2>
+          <ul class="list-disc pl-5 mt-2">
+            <% resource.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= f.input :reset_password_token, as: :hidden %>
+      <%= f.full_error :reset_password_token %>
+
+      <div class="space-y-4">
+        <div>
+          <%= f.label :password, "Nova senha", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.input_field :password, required: true, autofocus: true, input_html: { autocomplete: "new-password" }, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <%= f.hint "Mínimo #{@minimum_password_length} caracteres" if @minimum_password_length %>
+        </div>
+        <div>
+          <%= f.label :password_confirmation, "Confirme a nova senha", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.input_field :password_confirmation, required: true, input_html: { autocomplete: "new-password" }, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <%= f.button :submit, "Mudar minha senha", class: "w-full bg-blue-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+      </div>
+    <% end %>
+
+    <div class="mt-4 text-center">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

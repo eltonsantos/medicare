@@ -9,7 +9,6 @@ class CreateMedicines < ActiveRecord::Migration[7.1]
       t.date :medicine_validity
       t.text :medicine_insert
       t.string :used_to
-      t.date :purchase_date
       t.references :user, null: false, foreign_key: true
 
       t.timestamps
