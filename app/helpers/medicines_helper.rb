@@ -7,23 +7,38 @@ module MedicinesHelper
       translations = {
         name: "Nome",
         unit: "Unidade",
+        is_liquid: "É líquido?",
         quantity: "Quantidade",
         medicine_validity: "Validade",
         medicine_insert: "Bula",
         used_to: "Usado para",
         created_at: "Criado em",
-        updated_at: "Atualizado em"
+        updated_at: "Atualizado em",
+        user_id: "Usuário"
       }
 
       changes_hash.each do |attribute, values|
         translated_attribute = translations[attribute] || attribute.to_s.humanize
         before_value, after_value = values.map do |value|
-          if value.is_a?(String) && value.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/)
-            Time.parse(value).strftime("%d/%m/%Y - %H:%M")
+          if value.is_a?(String)
+            if value.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/)
+              Time.parse(value).strftime("%d/%m/%Y - %H:%M")
+            elsif value.match(/\d{4}-\d{2}-\d{2}/)
+              Date.parse(value).strftime("%d/%m/%Y")
+            else
+              value
+            end
           else
-            value
+            if attribute == :user_id
+              User.find_by(id: value)&.name || value
+            elsif attribute == :is_liquid
+              value ? "Sim" : "Não"
+            else
+              value
+            end
           end
         end
+        
         changes_html += "<strong>#{translated_attribute}:</strong><br>"
         changes_html += "<ul class='list-none'>"
         changes_html += "<li class='flex items-center space-x-2'>"
@@ -47,6 +62,7 @@ module MedicinesHelper
       end
 
       changes_html.html_safe
+
     else
       "Sem alterações registradas"
     end
