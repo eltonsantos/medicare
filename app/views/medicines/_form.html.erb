@@ -12,6 +12,10 @@
   <% end %>
 
   <div class="my-5">
+    <%= form.file_field :picture, label: "Imagem", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+  </div>
+
+  <div class="my-5">
     <%= form.input :name, label: "Nome", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
   </div>
 

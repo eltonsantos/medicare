@@ -52,7 +52,7 @@ class MedicinesController < ApplicationController
   end
 
   private
-  
+
     def set_paper_trail_whodunnit
       PaperTrail.request.whodunnit = current_user.id if current_user
     end
@@ -62,6 +62,6 @@ class MedicinesController < ApplicationController
     end
 
     def medicine_params
-      params.require(:medicine).permit(:name, :unit, :is_liquid, :quantity, :description, :medicine_validity, :medicine_insert, :used_to, :user_id, symptom_ids: [])
+      params.require(:medicine).permit(:picture, :name, :unit, :is_liquid, :quantity, :description, :medicine_validity, :medicine_insert, :used_to, :user_id, symptom_ids: [])
     end
 end

@@ -2,6 +2,14 @@
   <div class="w-full bg-white p-2">
     <div class="space-y-4">
       <div class="border-b border-gray-200 pb-2">
+        <strong class="block font-medium mb-1">Imagem:</strong>
+        <% if @medicine.picture.attached? %>
+          <%= image_tag url_for(@medicine.picture), class: "w-full max-w-[200px] h-auto object-contain border border-gray-300 rounded-md" %>
+        <% else %>
+          <%= image_tag "logo-default.png", class: "w-full max-w-[200px] h-auto object-contain border border-gray-300 rounded-md" %>
+        <% end %>
+      </div>
+      <div class="border-b border-gray-200 pb-2">
         <strong class="block font-medium mb-1">Nome:</strong>
         <p class="text-gray-700"><%= @medicine.name %></p>
       </div>
