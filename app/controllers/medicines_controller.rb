@@ -3,7 +3,11 @@ class MedicinesController < ApplicationController
   before_action :set_paper_trail_whodunnit
 
   def index
-    @medicines = Medicine.all
+    if current_user.role == "admin"
+      @medicines = Medicine.all
+    else
+      @medicines = Medicine.where(user_id: current_user.id)
+    end
   end
 
   def show
@@ -40,14 +44,19 @@ class MedicinesController < ApplicationController
   end
 
   def activities
-    @activities = PaperTrail::Version.where(item_type: "Medicine").order(created_at: :desc)
-  end
-
-  def set_paper_trail_whodunnit
-    PaperTrail.request.whodunnit = current_user.id if current_user
+    if current_user.role == "admin"
+      @activities = PaperTrail::Version.where(item_type: "Medicine").order(created_at: :desc)
+    else
+      @activities = PaperTrail::Version.where(item_type: "Medicine", whodunnit: current_user.id.to_s).order(created_at: :desc)
+    end
   end
 
   private
+  
+    def set_paper_trail_whodunnit
+      PaperTrail.request.whodunnit = current_user.id if current_user
+    end
+
     def set_medicine
       @medicine = Medicine.find(params[:id])
     end
