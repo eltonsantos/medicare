@@ -15,7 +15,7 @@
       <div class="flex h-screen overflow-hidden">
         <aside data-controller="sidebar" data-sidebar-target="sidebar" class="bg-blue-500 text-white dark:bg-slate-700 w-60 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-200 ease-in-out">
           <div class="flex items-center justify-between px-4">
-            <div id="logo" class="flex items-center space-x-2 hover:text-blue-700">
+            <div id="logo" class="flex items-center space-x-2">
               <span class="text-3xl font-bold" data-sidebar-target="logo"><%= lucide_icon('briefcase-medical', class: 'h-10 w-10') %></span>
               <span class="text-3xl font-bold hidden md:block" data-sidebar-target="fullLogo">Medicare</span>
             </div>
@@ -39,6 +39,10 @@
             <%= link_to activities_medicines_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
               <%= lucide_icon('history', class: 'h-6 w-6 inline-block') %>
               <span class="ml-3 hidden md:inline">Atividades</span>
+            <% end %>
+            <%= link_to activities_medicines_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
+              <%= lucide_icon('users', class: 'h-6 w-6 inline-block') %>
+              <span class="ml-3 hidden md:inline">Usuários</span>
             <% end %>
           </nav>
         </aside>

@@ -12,43 +12,44 @@
   <% end %>
 
   <div class="my-5">
-    <%= form.file_field :picture, label: "Imagem", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+    <p class="text-slate-900 font-medium text-sm">Imagem</p>
+    <%= form.file_field :picture, label: "Imagem", class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full dark:text-slate-900" %>
   </div>
 
-  <div class="my-5">
+  <div class="my-5 text-slate-900">
     <%= form.input :name, label: "Nome", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
   </div>
 
-  <div class="my-5">
-    <%= form.input :unit, as: :integer, label: "Unidade", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+  <div class="my-5 text-slate-900">
+    <%= form.input :unit, as: :integer, label: "Unidade", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
   </div>
 
-  <div class="my-5">
+  <div class="my-5 text-slate-900">
     <%= form.input :is_liquid, as: :radio_buttons, label: "É liquido?", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" } %>
   </div>
 
-  <div class="my-5">
-    <%= form.input :quantity, as: :integer, label: "Quantidade", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+  <div class="my-5 text-slate-900">
+    <%= form.input :quantity, as: :integer, label: "Quantidade", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
   </div>
 
-  <div class="my-5">
-    <%= form.input :description, as: :text, label: "Descrição", input_html: { rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+  <div class="my-5 text-slate-900">
+    <%= form.input :description, as: :text, label: "Descrição", input_html: { rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
   </div>
 
-  <div class="my-5">
+  <div class="my-5 text-slate-900">
     <%= form.label :medicine_validity, "Validade" %>
-    <%= form.date_field :medicine_validity, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.date_field :medicine_validity, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" %>
   </div>
 
-  <div class="my-5">
-    <%= form.input :medicine_insert, as: :text, label: "Bula", input_html: { rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+  <div class="my-5 text-slate-900">
+    <%= form.input :medicine_insert, as: :text, label: "Bula", input_html: { rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
   </div>
 
-  <div class="my-5">
-    <%= form.input :used_to, label: "Usado para", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+  <div class="my-5 text-slate-900">
+    <%= form.input :used_to, label: "Usado para", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
   </div>
 
-  <div class="my-5">
+  <div class="my-5 text-slate-900">
     <%= form.association :symptoms, as: :check_boxes, collection: Symptom.all, label: "Sintomas", checked: @medicine.symptom_ids %>
   </div>
 

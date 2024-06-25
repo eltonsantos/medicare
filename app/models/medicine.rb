@@ -7,4 +7,6 @@ class Medicine < ApplicationRecord
   has_many :symptoms, through: :medicine_symptoms
   
   has_one_attached :picture
+
+  validates :name, :unit, :quantity, :medicine_validity, presence: true
 end
