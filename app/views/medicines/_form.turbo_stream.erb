@@ -1,0 +1,59 @@
+<%= simple_form_for(@medicine, html: { class: "contents" }) do |form| %>
+  <% if @medicine.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+      <h2><%= pluralize(@medicine.errors.count, "error") %> prohibited this medicine from being saved:</h2>
+
+      <ul>
+        <% @medicine.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <p class="text-slate-900 font-medium text-sm">Imagem</p>
+    <%= form.file_field :picture, label: "Imagem", class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full dark:text-slate-900" %>
+  </div>
+
+  <div class="my-5 text-slate-900">
+    <%= form.input :name, label: "Nome", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+  </div>
+
+  <div class="my-5 text-slate-900">
+    <%= form.input :unit, as: :integer, label: "Unidade", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
+  </div>
+
+  <div class="my-5 text-slate-900">
+    <%= form.input :is_liquid, as: :radio_buttons, label: "É liquido?", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" } %>
+  </div>
+
+  <div class="my-5 text-slate-900">
+    <%= form.input :quantity, as: :integer, label: "Quantidade", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
+  </div>
+
+  <div class="my-5 text-slate-900">
+    <%= form.input :description, as: :text, label: "Descrição", input_html: { rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
+  </div>
+
+  <div class="my-5 text-slate-900">
+    <%= form.label :medicine_validity, "Validade" %>
+    <%= form.date_field :medicine_validity, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" %>
+  </div>
+
+  <div class="my-5 text-slate-900">
+    <%= form.input :medicine_insert, as: :text, label: "Bula", input_html: { rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
+  </div>
+
+  <div class="my-5 text-slate-900">
+    <%= form.input :used_to, label: "Usado para", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
+  </div>
+
+  <div class="my-5 text-slate-900">
+    <%= form.association :symptoms, as: :check_boxes, collection: Symptom.all, label: "Sintomas", checked: @medicine.symptom_ids %>
+  </div>
+
+  <div class="inline">
+    <%= form.button :submit, @medicine.new_record? ? "Cadastrar" : "Editar", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

@@ -23,18 +23,22 @@ class MedicinesController < ApplicationController
   def create
     @medicine = current_user.medicines.new(medicine_params)
 
-    if @medicine.save
-      redirect_to medicines_url, notice: "Medicine was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      if @medicine.save
+        format.turbo_stream { redirect_to medicines_url, notice: "Medicine was successfully created." }
+      else
+        format.turbo_stream { render :new, status: :unprocessable_entity }
+      end
     end
   end
 
   def update
-    if @medicine.update(medicine_params)
-      redirect_to medicines_url, notice: "Medicine was successfully updated.", status: :see_other
-    else
-      render :edit, status: :unprocessable_entity
+    respond_to do |format|
+      if @medicine.update(medicine_params)
+        format.turbo_stream { redirect_to medicines_url, notice: "Medicine was successfully updated.", status: :see_other }
+      else
+        format.turbo_stream { render :edit, status: :unprocessable_entity }
+      end
     end
   end
 
