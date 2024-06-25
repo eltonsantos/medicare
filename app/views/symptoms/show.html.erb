@@ -1,15 +1,15 @@
-<div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
-    <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-    <% end %>
+<%= render "modal", title: "Detalhes" do %>
+  <div class="w-full bg-white p-2">
+    <div class="space-y-4">
+      <div class="border-b border-gray-200 pb-2">
+        <strong class="block font-medium mb-1">Nome:</strong>
+        <p class="text-gray-700"><%= @symptom.name %></p>
+      </div>
 
-    <%= render @symptom %>
-
-    <%= link_to "Edit this symptom", edit_symptom_path(@symptom), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Back to symptoms", symptoms_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to "Destroy this symptom", @symptom, method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+      <div class="border-b border-gray-200 pb-2">
+        <strong class="block font-medium mb-1">Descrição:</strong>
+        <p class="text-gray-700"><%= @symptom.description %></p>
+      </div>
     </div>
   </div>
-</div>
+<% end %>

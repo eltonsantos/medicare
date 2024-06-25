@@ -6,7 +6,7 @@
 
 <div class="flex justify-between items-center mb-6">
   <h1 class="font-bold text-4xl text-blue-500">Sintomas</h1>
-  <%= link_to "Cadastrar sintoma", new_symptom_path, class: "rounded-lg py-3 px-5 bg-blue-400 hover:bg-blue-500 text-white block font-medium" %>
+  <%= link_to "Cadastrar sintoma", new_symptom_path, class: "rounded-lg py-3 px-5 bg-blue-400 hover:bg-blue-500 text-white block font-medium", data: { turbo_frame: "modal" } %>
 </div>
 
 <div id="symptoms" class="w-full">
@@ -25,13 +25,13 @@
               <div class="text-sm text-gray-900"><%= symptom.name %></div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-              <%= link_to symptom, class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer" do %>
+              <%= link_to symptom, class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer", data: { turbo_frame: "modal" } do %>
                 <%= lucide_icon('eye', class: 'inline-block text-blue-600 cursor-pointer') %>
               <% end %>
-              <%= link_to edit_symptom_path(symptom), class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer" do %>
+              <%= link_to edit_symptom_path(symptom), class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer", data: { turbo_frame: "modal" } do %>
                 <%= lucide_icon('file-pen-line', class: 'inline-block text-blue-600 cursor-pointer') %>
               <% end %>
-              <%= link_to symptom, method: :delete, class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer" do %>
+              <%= link_to symptom, method: :delete, class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer", data: { turbo_method: :delete, turbo_confirm: "Tem certeza?" } do %>
                 <%= lucide_icon('circle-x', class: 'inline-block text-red-600 cursor-pointer') %>
               <% end %>
             </td>
