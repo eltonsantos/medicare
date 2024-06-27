@@ -10,4 +10,48 @@
 
 <div id="home" class="w-full">
   <p>Medicare</p>
+
+  <% if @medicine.last == nil and @symptom.last == nil %>
+    <p>
+      Seja bem vindo a Medicare. Sua farmacinha particular e online!
+      No momento você não tem nada cadastrado no sistema.
+
+      <p>Para começar a usar a Medicare comece cadastrando um sintoma <%= link_to "aqui", new_symptom_path, class: "text-blue-500 underline" %></p>
+    </p>
+  <% else %>  
+    <p>Lista de remédios que tenho em casa | Atualizado em:
+      <span class="bg-gray-700 text-white px-2 py-1 rounded">
+        <%= @medicine.last ? @medicine.last.updated_at.strftime("%d/%m/%Y") : "---" %>
+      </span> 
+    </p>
+
+    <br />
+
+    <div class="flex flex-wrap space-y-4">
+      <div class="w-full md:w-1/3 px-2">
+        <%= link_to medicines_path, class: "block w-full text-center py-2 bg-blue-500 text-white rounded shadow-md" do %>
+          Remédios cadastrados
+          <span class="ml-2 bg-gray-500 text-white px-2 py-1 rounded">
+            <%= @medicine.count %>
+          </span>
+        <% end %>
+      </div>
+      <div class="w-full md:w-1/3 px-2">
+        <%= link_to symptoms_path, class: "block w-full text-center py-2 bg-blue-300 text-white rounded shadow-md" do %>
+          Sintomas cadastrados
+          <span class="ml-2 bg-gray-500 text-white px-2 py-1 rounded">
+            <%= @symptom.count %>
+          </span>
+        <% end %>
+      </div>
+      <div class="w-full md:w-1/3 px-2">
+        <button type="button" class="block w-full text-center py-2 bg-yellow-500 text-white rounded shadow-md cursor-not-allowed">
+          Próximo ao vencimento
+          <span class="ml-2 bg-gray-500 text-white px-2 py-1 rounded">
+            0
+          </span>
+        </button>
+      </div>
+    </div>
+  <% end %>
 </div>

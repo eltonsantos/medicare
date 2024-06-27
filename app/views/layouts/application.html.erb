@@ -40,9 +40,11 @@
               <%= lucide_icon('history', class: 'h-6 w-6 inline-block') %>
               <span class="ml-3 hidden md:inline">Atividades</span>
             <% end %>
-            <%= link_to activities_medicines_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
-              <%= lucide_icon('users', class: 'h-6 w-6 inline-block') %>
-              <span class="ml-3 hidden md:inline">Usuários</span>
+            <% if current_user.role == 'admin' %>
+              <%= link_to activities_medicines_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
+                <%= lucide_icon('users', class: 'h-6 w-6 inline-block') %>
+                <span class="ml-3 hidden md:inline">Usuários</span>
+              <% end %>
             <% end %>
           </nav>
         </aside>
