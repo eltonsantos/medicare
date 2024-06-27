@@ -19,7 +19,7 @@ class SymptomsController < ApplicationController
     @symptom = Symptom.new(symptom_params)
 
     if @symptom.save
-      redirect_to symptoms_url, notice: "Symptom was successfully created."
+      redirect_to symptoms_url, notice: "Sintoma registrado com sucesso."
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class SymptomsController < ApplicationController
 
   def update
     if @symptom.update(symptom_params)
-      redirect_to symptoms_url, notice: "Symptom was successfully updated.", status: :see_other
+      redirect_to symptoms_url, notice: "Sintoma atualizado com sucesso.", status: :see_other
     else
       render :edit, status: :unprocessable_entity
     end
@@ -35,7 +35,7 @@ class SymptomsController < ApplicationController
 
   def destroy
     @symptom.destroy!
-    redirect_to symptoms_url, notice: "Symptom was successfully destroyed.", status: :see_other
+    redirect_to symptoms_url, notice: "Sintoma excluído com sucesso.", status: :see_other
   end
 
   private

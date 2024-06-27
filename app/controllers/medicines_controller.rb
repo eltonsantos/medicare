@@ -25,7 +25,7 @@ class MedicinesController < ApplicationController
 
     respond_to do |format|
       if @medicine.save
-        format.turbo_stream { redirect_to medicines_url, notice: "Medicine was successfully created." }
+        format.turbo_stream { redirect_to medicines_url, notice: "Remédio registrado com sucesso." }
       else
         format.turbo_stream { render :new, status: :unprocessable_entity }
       end
@@ -35,7 +35,7 @@ class MedicinesController < ApplicationController
   def update
     respond_to do |format|
       if @medicine.update(medicine_params)
-        format.turbo_stream { redirect_to medicines_url, notice: "Medicine was successfully updated.", status: :see_other }
+        format.turbo_stream { redirect_to medicines_url, notice: "Remédio atualizado com sucesso.", status: :see_other }
       else
         format.turbo_stream { render :edit, status: :unprocessable_entity }
       end
@@ -44,7 +44,7 @@ class MedicinesController < ApplicationController
 
   def destroy
     @medicine.destroy!
-    redirect_to medicines_url, notice: "Medicine was successfully destroyed.", status: :see_other
+    redirect_to medicines_url, notice: "Remédio excluído com sucesso.", status: :see_other
   end
 
   def activities
