@@ -40,6 +40,16 @@
         <p class="text-gray-700"><%= @medicine.medicine_validity.strftime("%d/%m/%Y") %></p>
       </div>
       <div class="border-b border-gray-200 pb-2">
+        <strong class="block font-medium mb-1 text-slate-900">Bula:</strong>
+        <% if @medicine.medicine_insert.attached? %>
+          <%= link_to url_for(@medicine.medicine_insert), download: true, class: "text-blue-600 hover:underline flex items-center" do %>
+            <%= lucide_icon('file-down', class: 'inline-block mr-1 h-5 w-5') %>
+          <% end %>
+        <% else %>
+          <p class="text-gray-700">Nenhuma bula anexada.</p>
+        <% end %>
+      </div>
+      <div class="border-b border-gray-200 pb-2">
         <strong class="block font-medium mb-1 text-slate-900">Sintomas:</strong>
         <p class="text-gray-700">
           <% @medicine.symptoms.each do |symptom| %>
@@ -48,10 +58,6 @@
             </span>
           <% end %>
         </p>
-      </div>
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Bula:</strong>
-        <p class="text-gray-700"><%= @medicine.medicine_insert %></p>
       </div>
       <div class="border-b border-gray-200 pb-2">
         <strong class="block font-medium mb-1 text-slate-900">Usado para:</strong>
