@@ -47,9 +47,18 @@
         <button type="button" class="block w-full text-center py-2 bg-yellow-500 text-white rounded shadow-md cursor-not-allowed">
           Próximo ao vencimento
           <span class="ml-2 bg-gray-500 text-white px-2 py-1 rounded">
-            0
+            <%= @expiring_medicines.count %>
           </span>
         </button>
+        <% if @expiring_medicines.any? %>
+          <ul class="mt-2">
+            <% @expiring_medicines.each do |medicine| %>
+              <li><%= "#{medicine.name} - Vencimento em #{medicine.medicine_validity.strftime("%d/%m/%Y")}" %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-gray-700 mt-2">Nenhum medicamento próximo ao vencimento.</p>
+        <% end %>
       </div>
     </div>
   <% end %>
