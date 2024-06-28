@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
+  resources :users
   resources :symptoms
   resources :medicines do
     get :activities, on: :collection
