@@ -1,7 +1,7 @@
 <%= simple_form_for(@medicine, html: { class: "contents" }) do |form| %>
   <% if @medicine.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(@medicine.errors.count, "error") %> prohibited this medicine from being saved:</h2>
+      <h2><%= pluralize(@medicine.errors.count, "error") %> proibiram esse remédio de ser salvo:</h2>
 
       <ul>
         <% @medicine.errors.full_messages.each do |message| %>
