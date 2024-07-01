@@ -14,7 +14,7 @@ module MedicinesHelper
         used_to: "Usado para",
         created_at: "Criado em",
         updated_at: "Atualizado em",
-        user_id: "Usuário"
+        profile_id: "Perfil"
       }
 
       changes_hash.each do |attribute, values|
@@ -29,8 +29,8 @@ module MedicinesHelper
               value
             end
           else
-            if attribute == :user_id
-              User.find_by(id: value)&.name || value
+            if attribute == :profile_id
+              Profile.find_by(id: value)&.name || value
             elsif attribute == :is_liquid
               value ? "Sim" : "Não"
             else

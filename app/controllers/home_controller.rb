@@ -1,9 +1,9 @@
 class HomeController < ApplicationController
   def index
-    if current_user.role != "admin"
-      @medicine = Medicine.where(user_id: current_user.id)
+    if current_profile.role != "admin"
+      @medicine = Medicine.where(profile_id: current_profile.id)
       @symptom = Symptom.all
-      @expiring_medicines = current_user.medicines.where("medicine_validity <= ?", 10.days.from_now).order(:medicine_validity)
+      @expiring_medicines = current_profile.medicines.where("medicine_validity <= ?", 10.days.from_now).order(:medicine_validity)
     else
       @medicine = Medicine.all
       @symptom = Symptom.all

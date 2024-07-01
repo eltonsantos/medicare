@@ -3,10 +3,10 @@ class MedicinesController < ApplicationController
   before_action :set_paper_trail_whodunnit
 
   def index
-    if current_user.role == "admin"
+    if current_profile.role == "admin"
       @medicines = Medicine.all
     else
-      @medicines = Medicine.where(user_id: current_user.id)
+      @medicines = Medicine.where(profile_id: current_profile.id)
     end
   end
 
@@ -21,7 +21,7 @@ class MedicinesController < ApplicationController
   end
 
   def create
-    @medicine = current_user.medicines.new(medicine_params)
+    @medicine = current_profile.medicines.new(medicine_params)
 
     respond_to do |format|
       if @medicine.save
@@ -48,17 +48,17 @@ class MedicinesController < ApplicationController
   end
 
   def activities
-    if current_user.role == "admin"
+    if current_profile.role == "admin"
       @activities = PaperTrail::Version.where(item_type: "Medicine").order(created_at: :desc)
     else
-      @activities = PaperTrail::Version.where(item_type: "Medicine", whodunnit: current_user.id.to_s).order(created_at: :desc)
+      @activities = PaperTrail::Version.where(item_type: "Medicine", whodunnit: current_profile.id.to_s).order(created_at: :desc)
     end
   end
 
   private
 
     def set_paper_trail_whodunnit
-      PaperTrail.request.whodunnit = current_user.id if current_user
+      PaperTrail.request.whodunnit = current_profile.id if current_profile
     end
 
     def set_medicine
@@ -66,6 +66,6 @@ class MedicinesController < ApplicationController
     end
 
     def medicine_params
-      params.require(:medicine).permit(:picture, :name, :unit, :is_liquid, :quantity, :description, :medicine_validity, :medicine_insert, :used_to, :user_id, symptom_ids: [])
+      params.require(:medicine).permit(:picture, :name, :unit, :is_liquid, :quantity, :description, :medicine_validity, :medicine_insert, :used_to, :profile_id, symptom_ids: [])
     end
 end

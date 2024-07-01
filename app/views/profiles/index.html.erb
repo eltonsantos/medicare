@@ -2,15 +2,15 @@
   <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
 <% end %>
 
-<% content_for :title, "Usuários" %>
+<% content_for :title, "Perfis" %>
 
 <div class="flex justify-between items-center mb-6">
-  <h1 class="font-bold text-4xl text-blue-500">Usuários</h1>
-  <%= link_to "Cadastrar usuário", new_user_path, class: "rounded-lg py-3 px-5 bg-blue-400 hover:bg-blue-500 text-white block font-medium", data: { turbo_frame: "modal" } %>
+  <h1 class="font-bold text-4xl text-blue-500">Perfis</h1>
+  <%= link_to "Cadastrar perfil", new_profile_path, class: "rounded-lg py-3 px-5 bg-blue-400 hover:bg-blue-500 text-white block font-medium", data: { turbo_frame: "modal" } %>
 </div>
 
-<div id="users" class="w-full">
-  <% if @users.any? %>
+<div id="profiles" class="w-full">
+  <% if @profiles.any? %>
     <table class="min-w-full divide-y divide-gray-200">
       <thead class="bg-blue-50">
         <tr>
@@ -20,19 +20,19 @@
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
-        <% @users.each do |user| %>
-          <tr id="<%= dom_id user %>">
+        <% @profiles.each do |profile| %>
+          <tr id="<%= dom_id profile %>">
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900"><%= user.name %></div>
+              <div class="text-sm text-gray-900"><%= profile.name %></div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900"><%= user.email %></div>
+              <div class="text-sm text-gray-900"><%= profile.email %></div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-              <%= link_to edit_user_path(user), class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer", data: { turbo_frame: "modal" } do %>
+              <%= link_to edit_profile_path(profile), class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer", data: { turbo_frame: "modal" } do %>
                 <%= lucide_icon('file-pen-line', class: 'inline-block text-blue-600 cursor-pointer') %>
               <% end %>
-              <%= link_to user, method: :delete, class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer", data: { turbo_method: :delete, turbo_confirm: "Tem certeza?" } do %>
+              <%= link_to profile, method: :delete, class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer", data: { turbo_method: :delete, turbo_confirm: "Tem certeza?" } do %>
                 <%= lucide_icon('circle-x', class: 'inline-block text-red-600 cursor-pointer') %>
               <% end %>
             </td>

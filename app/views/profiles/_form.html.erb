@@ -1,4 +1,4 @@
-<%= simple_form_for(@user, url: create_user_path, html: { class: "contents" }) do |form| %>
+<%= simple_form_for(@profile, url: create_profile_path, html: { class: "contents" }) do |form| %>
 
   <div class="my-5 text-slate-900">
     <%= form.input :name, label: "Nome", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
@@ -16,13 +16,13 @@
     <%= form.input :password_confirmation, label: "Confirmar senha", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
   </div>
 
-  <% if current_user.admin? %>
+  <% if current_profile.admin? %>
     <div class="my-5 text-slate-900">
-      <%= form.input :role, as: :select, collection: User.roles.keys.map { |role| [role.titleize, role] }, label: "Regra", prompt: "Selecione o tipo de acesso", required: true, input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" }, label_html: { class: "block text-gray-700" } %>
+      <%= form.input :role, as: :select, collection: Profile.roles.keys.map { |role| [role == "user" ? "Usuário" : "Administrador", role] }, label: "Regra", prompt: "Selecione o tipo de acesso", required: true, input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" }, label_html: { class: "block text-gray-700" } %>
     </div>
   <% end %>
 
   <div class="inline">
-    <%= form.button :submit, @user.new_record? ? "Cadastrar" : "Editar", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.button :submit, @profile.new_record? ? "Cadastrar" : "Editar", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>

@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { registrations: 'users/registrations' }
-  resources :users, except: [:new, :create, :show]
-  get 'users/new', to: 'users#new', as: :new_user
-  post 'users_management', to: 'users#create', as: :create_user
+  resources :members
+  devise_for :profiles, controllers: { registrations: 'profiles/registrations' }
+  resources :profiles, except: [:new, :create, :show]
+  get 'profiles/new', to: 'profiles#new', as: :new_profile
+  post 'profiles_management', to: 'profiles#create', as: :create_profile
 
   resources :symptoms
   resources :medicines do

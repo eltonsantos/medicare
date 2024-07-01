@@ -11,7 +11,7 @@
   </head>
 
   <body data-controller="theme">
-    <% if user_signed_in? %>
+    <% if profile_signed_in? %>
       <div class="flex h-screen overflow-hidden">
         <aside data-controller="sidebar" data-sidebar-target="sidebar" class="bg-blue-500 text-white dark:bg-slate-700 w-60 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-200 ease-in-out">
           <div class="flex items-center justify-between px-4">
@@ -36,14 +36,18 @@
               <%= lucide_icon('thermometer', class: 'h-6 w-6 inline-block') %>
               <span class="ml-3 hidden md:inline">Sintomas</span>
             <% end %>
+            <%= link_to members_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
+              <%= lucide_icon('user-round-plus', class: 'h-6 w-6 inline-block') %>
+              <span class="ml-3 hidden md:inline">Membros</span>
+            <% end %>
             <%= link_to activities_medicines_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
               <%= lucide_icon('history', class: 'h-6 w-6 inline-block') %>
               <span class="ml-3 hidden md:inline">Atividades</span>
             <% end %>
-            <% if current_user.role == 'admin' %>
-              <%= link_to users_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
+            <% if current_profile.role == 'admin' %>
+              <%= link_to profiles_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
                 <%= lucide_icon('users', class: 'h-6 w-6 inline-block') %>
-                <span class="ml-3 hidden md:inline">Usuários</span>
+                <span class="ml-3 hidden md:inline">Perfils</span>
               <% end %>
             <% end %>
           </nav>
@@ -56,8 +60,8 @@
               <%= lucide_icon('sun', class: 'h-6 w-6 inline-block hidden dark:block') %>
             </button>
             <div class="flex items-center space-x-4">   
-              <span class="text-slate-700 dark:text-white">Olá, <%= current_user.name %> (<%= current_user.email %>)</span>
-              <%= form_tag destroy_user_session_path, method: :delete, class: "inline" do %>
+              <span class="text-slate-700 dark:text-white">Olá, <%= current_profile.name %> (<%= current_profile.email %>)</span>
+              <%= form_tag destroy_profile_session_path, method: :delete, class: "inline" do %>
                 <button type="submit" class="text-slate-400 hover:text-slate-600 dark:text-white flex items-center space-x-2">
                   <%= lucide_icon('log-out', class: 'h-6 w-6 inline-block') %>
                   <span>Sair</span>
