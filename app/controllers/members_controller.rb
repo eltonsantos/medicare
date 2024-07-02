@@ -3,7 +3,11 @@ class MembersController < ApplicationController
 
   # GET /members
   def index
-    @members = Member.all
+    if current_profile.role == "admin"
+      @members = Member.all
+    else
+      @members = Member.where(profile_id: current_profile.id)
+    end
   end
 
   # GET /members/1
@@ -25,7 +29,7 @@ class MembersController < ApplicationController
     @member.profile = current_profile
 
     if @member.save
-      redirect_to @member, notice: "Member was successfully created."
+      redirect_to members_url, notice: "Member was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -34,7 +38,7 @@ class MembersController < ApplicationController
   # PATCH/PUT /members/1
   def update
     if @member.update(member_params)
-      redirect_to @member, notice: "Member was successfully updated.", status: :see_other
+      redirect_to members_url, notice: "Member was successfully updated.", status: :see_other
     else
       render :edit, status: :unprocessable_entity
     end
