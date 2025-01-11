@@ -4,7 +4,7 @@ class MedicinesController < ApplicationController
 
   def index
     if current_profile.role == "admin"
-      @medicines = Medicine.all
+      @medicines = Medicine.all.includes([:profile, :symptoms])
     else
       @medicines = Medicine.where(profile_id: current_profile.id)
     end

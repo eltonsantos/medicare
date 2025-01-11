@@ -43,6 +43,7 @@ gem 'kaminari'
 gem 'ransack'
 gem 'lucide-rails'
 gem 'paper_trail'
+gem 'rails_toastify'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
