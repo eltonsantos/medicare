@@ -4,9 +4,9 @@ class MembersController < ApplicationController
   # GET /members
   def index
     if current_profile.role == "admin"
-      @members = Member.all
+      @members = Member.all.includes([:profile])
     else
-      @members = Member.where(profile_id: current_profile.id)
+      @members = Member.where(profile_id: current_profile.id).includes([:profile])
     end
   end
 
