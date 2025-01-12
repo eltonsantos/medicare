@@ -7,6 +7,10 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+    <%= stylesheet_link_tag 'rails_toastify', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'rails_toastify', 'data-turbo-track': 'reload' %>
+
     <%= javascript_importmap_tags %>
   </head>
 
@@ -73,6 +77,9 @@
             <button data-action="sidebar#toggle" class="fixed bottom-4 left-4 bg-blue-600 text-white p-2 rounded-full shadow-md hover:bg-blue-700 dark:bg-slate-700 dark:text-white">
               <%= lucide_icon('arrow-left', class: 'h-6 w-6') %>
             </button>
+            <%= rails_toastify_container %>
+            <%= rails_toastify_script %>
+
             <%= yield %>
             <%= turbo_frame_tag "modal", target: "_top" %>
           </main>
@@ -80,6 +87,28 @@
       </div>
     <% else %>
       <%= yield %>
+    <% end %>
+
+    <% if notice %>
+      <script>
+        RailsToastify.show('<%= notice %>',
+          { theme: '<%= RailsToastify.configuration.notice_theme %>',
+            type: '<%= RailsToastify.configuration.notice_type %>',
+            animation: '<%= RailsToastify.configuration.notice_animation %>',
+            duration: <%= RailsToastify.configuration.notice_duration %>
+          })
+      </script>
+    <% end %>
+
+    <% if alert %>
+      <script>
+        RailsToastify.show('<%= alert %>',
+          { theme: '<%= RailsToastify.configuration.alert_theme %>',
+            type: '<%= RailsToastify.configuration.alert_type %>',
+            animation: '<%= RailsToastify.configuration.alert_animation %>',
+            duration: <%= RailsToastify.configuration.alert_duration %>
+          })
+      </script>
     <% end %>
   </body>
 </html>
