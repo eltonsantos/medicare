@@ -13,6 +13,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <%= javascript_importmap_tags %>
+    
+    <!-- Adicionando JavaScript inline para garantir que o menu funcione em dispositivos móveis -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Encontra o botão de menu móvel
+        const mobileMenuBtn = document.getElementById('mobileSidebarToggle');
+        // Encontra a sidebar
+        const sidebar = document.querySelector('[data-sidebar-target="sidebar"]');
+        
+        // Adiciona um listener de clique explícito
+        if (mobileMenuBtn && sidebar) {
+          mobileMenuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            sidebar.classList.toggle('-translate-x-full');
+            console.log('Menu mobile clicked');
+          });
+        }
+      });
+    </script>
   </head>
 
   <body data-controller="theme" class="font-sans antialiased">
@@ -25,7 +44,7 @@
               <span class="text-3xl font-bold text-white" data-sidebar-target="logo"><%= lucide_icon('briefcase-medical', class: 'h-10 w-10') %></span>
               <span class="text-2xl font-bold text-white" data-sidebar-target="menuText">Medicare</span>
             </div>
-            <button data-action="sidebar#toggle" class="text-white md:hidden focus:outline-none">
+            <button id="closeSidebarBtn" class="text-white md:hidden focus:outline-none">
               <%= lucide_icon('x', class: 'h-6 w-6') %>
             </button>
           </div>
@@ -73,9 +92,10 @@
           </nav>
           
           <!-- Botão toggle no canto inferior esquerdo absolutamente posicionado -->
-          <div class="absolute bottom-3 left-3 z-10">
+          <div class="absolute bottom-3 left-3 z-10 hidden md:block">
             <button 
-              data-action="sidebar#toggle" 
+              data-action="click->sidebar#toggle" 
+              id="sidebarToggleButton"
               class="h-8 w-8 flex items-center justify-center bg-teal-700 dark:bg-slate-700 rounded-full text-white hover:bg-teal-800 dark:hover:bg-slate-600 transition-colors duration-200"
               title="Expandir/Recolher sidebar"
             >
@@ -88,7 +108,10 @@
           <!-- Header -->
           <header class="bg-white dark:bg-gray-800 shadow-sm py-3 px-6 flex justify-between items-center">
             <div class="flex items-center lg:hidden">
-              <button data-action="sidebar#toggle" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 focus:outline-none">
+              <button 
+                id="mobileSidebarToggle"
+                class="text-gray-500 hover:text-gray-700 dark:text-gray-300 focus:outline-none p-2"
+              >
                 <%= lucide_icon('menu', class: 'h-6 w-6') %>
               </button>
             </div>
@@ -122,6 +145,20 @@
           </main>
         </div>
       </div>
+
+      <script>
+        // Script para fechar a sidebar quando o botão X é clicado
+        document.addEventListener('DOMContentLoaded', function() {
+          const closeBtn = document.getElementById('closeSidebarBtn');
+          const sidebar = document.querySelector('[data-sidebar-target="sidebar"]');
+          
+          if (closeBtn && sidebar) {
+            closeBtn.addEventListener('click', function() {
+              sidebar.classList.add('-translate-x-full');
+            });
+          }
+        });
+      </script>
     <% else %>
       <div class="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 flex flex-col">
         <%= yield %>

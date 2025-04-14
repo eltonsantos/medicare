@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["sidebar", "menuText", "logo", "sidebarToggle"]
 
   initialize() {
-    this.isSidebarOpen = true;
+    this.isSidebarOpen = false;
     this.isCompactMode = false;
     
     // Verificar o tamanho da tela ao inicializar
@@ -12,80 +12,114 @@ export default class extends Controller {
     
     // Adicionar listener para alterações no tamanho da tela
     window.addEventListener('resize', this.checkScreenSize.bind(this));
+    
+    // Registrar no log para depuração
+    console.log("Sidebar controller initialized");
   }
 
   connect() {
-    this.checkSize()
-    window.addEventListener('resize', this.checkSize.bind(this))
+    console.log("Sidebar controller connected");
   }
 
   disconnect() {
-    window.removeEventListener('resize', this.checkSize.bind(this))
+    window.removeEventListener('resize', this.checkScreenSize.bind(this));
   }
 
-  toggle() {
-    this.sidebarTarget.classList.toggle('-translate-x-full')
-    this.toggleCompactMode()
+  toggle(event) {
+    // Log para depuração do botão do menu mobile
+    console.log("Toggle clicked", window.innerWidth);
+    
+    // Interrompe a propagação e comportamento padrão
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Em dispositivos móveis, apenas abre e fecha a sidebar
+    if (window.innerWidth < 1024) {
+      console.log("Mobile toggle", this.isSidebarOpen);
+      
+      if (this.isSidebarOpen) {
+        this.closeSidebar();
+      } else {
+        this.openSidebar();
+      }
+    } else {
+      // Em dispositivos maiores, alterna o modo compacto
+      this.toggleCompactMode();
+    }
+  }
+  
+  // Método específico para abrir a sidebar no mobile
+  openSidebar() {
+    console.log("Opening sidebar");
+    this.sidebarTarget.classList.remove('-translate-x-full');
+    this.isSidebarOpen = true;
+  }
+  
+  // Método específico para fechar a sidebar no mobile
+  closeSidebar() {
+    console.log("Closing sidebar");
+    this.sidebarTarget.classList.add('-translate-x-full');
+    this.isSidebarOpen = false;
   }
 
   toggleCompactMode() {
     // Quando a sidebar está expandida
     if (this.sidebarTarget.classList.contains('w-50')) {
       // Muda para modo compacto
-      this.sidebarTarget.classList.remove('w-50')
-      this.sidebarTarget.classList.add('w-16')
+      this.sidebarTarget.classList.remove('w-50');
+      this.sidebarTarget.classList.add('w-16');
       
       // Oculta os textos do menu, mas deixa os ícones visíveis
       this.menuTextTargets.forEach(el => {
-        el.classList.add('hidden')
-      })
+        el.classList.add('hidden');
+      });
       
       // Centraliza o logo
       if (this.hasLogoTarget) {
-        this.logoTarget.classList.add('mx-auto')
+        this.logoTarget.classList.add('mx-auto');
       }
       
       // Rotaciona o ícone do toggle para indicar expansão
-      this.sidebarToggleTarget.classList.remove('transform', 'rotate-0')
-      this.sidebarToggleTarget.classList.add('transform', 'rotate-180')
+      if (this.hasSidebarToggleTarget) {
+        this.sidebarToggleTarget.classList.remove('rotate-0');
+        this.sidebarToggleTarget.classList.add('rotate-180');
+      }
+      
+      this.isCompactMode = true;
     } else {
       // Muda para modo expandido
-      this.sidebarTarget.classList.remove('w-16')
-      this.sidebarTarget.classList.add('w-50')
+      this.sidebarTarget.classList.remove('w-16');
+      this.sidebarTarget.classList.add('w-50');
       
       // Mostra os textos do menu
       this.menuTextTargets.forEach(el => {
-        el.classList.remove('hidden')
-      })
+        el.classList.remove('hidden');
+      });
       
       // Remove centralização do logo
       if (this.hasLogoTarget) {
-        this.logoTarget.classList.remove('mx-auto')
+        this.logoTarget.classList.remove('mx-auto');
       }
       
       // Rotaciona o ícone do toggle para indicar compactação
-      this.sidebarToggleTarget.classList.remove('transform', 'rotate-180')
-      this.sidebarToggleTarget.classList.add('transform', 'rotate-0')
-    }
-  }
-  
-  checkSize() {
-    if (window.innerWidth < 1024) {
-      // Modo móvel: sidebar fica escondida
-      this.sidebarTarget.classList.add('-translate-x-full')
-    } else {
-      // Desktop: sidebar visível
-      this.sidebarTarget.classList.remove('-translate-x-full')
+      if (this.hasSidebarToggleTarget) {
+        this.sidebarToggleTarget.classList.remove('rotate-180');
+        this.sidebarToggleTarget.classList.add('rotate-0');
+      }
+      
+      this.isCompactMode = false;
     }
   }
   
   checkScreenSize() {
     if (window.innerWidth < 1024) {
-      // Modo móvel: sidebar fica escondida
-      this.sidebarTarget.classList.add('-translate-x-full')
+      // Para dispositivos móveis, esconde a sidebar inicialmente
+      this.sidebarTarget.classList.add('-translate-x-full');
+      this.isSidebarOpen = false;
     } else {
-      // Desktop: sidebar visível
-      this.sidebarTarget.classList.remove('-translate-x-full')
+      // Para desktop, mantém a sidebar visível
+      this.sidebarTarget.classList.remove('-translate-x-full');
+      this.isSidebarOpen = true;
     }
   }
 }
