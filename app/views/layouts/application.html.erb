@@ -55,16 +55,18 @@
   <body data-controller="theme" class="font-sans antialiased">
     <% if profile_signed_in? %>
       <div class="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-900">
-        <!-- Sidebar -->
         <aside data-controller="sidebar" data-sidebar-target="sidebar" class="bg-teal-600 text-white dark:bg-slate-800 w-50 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-all duration-300 ease-in-out shadow-lg z-30 flex flex-col">
-          <div class="flex items-center justify-center px-4">
+          <div class="absolute top-2 right-2 md:hidden">
+            <button id="closeSidebarBtn" class="text-white focus:outline-none hover:bg-teal-700 p-1 rounded-md">
+              <%= lucide_icon('x', class: 'h-6 w-6') %>
+            </button>
+          </div>
+          
+          <div class="flex items-center justify-center px-4 mt-1">
             <div id="logo" class="flex items-center space-x-2">
               <span class="text-3xl font-bold text-white" data-sidebar-target="logo"><%= lucide_icon('briefcase-medical', class: 'h-10 w-10') %></span>
               <span class="text-2xl font-bold text-white" data-sidebar-target="menuText">Medicare</span>
             </div>
-            <button id="closeSidebarBtn" class="text-white md:hidden focus:outline-none">
-              <%= lucide_icon('x', class: 'h-6 w-6') %>
-            </button>
           </div>
           
           <nav class="mt-8 flex-1 overflow-y-auto">

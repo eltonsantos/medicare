@@ -6,6 +6,6 @@ RailsToastify.setup do |configuration|
   configuration.alert_duration = 3000
   configuration.notice_theme = 'light' # light, dark
   configuration.alert_theme = 'light' # light, dark
-  configuration.notice_type = 'default' # default, success, warning, error, info
+  configuration.notice_type = 'success' # default, success, warning, error, info
   configuration.alert_type = 'error' # default, success, warning, error, info
 end
