@@ -1,9 +1,18 @@
-<%= render "modal", title: "Detalhes" do %>
-  <div class="w-full bg-white p-2">
-    <div class="space-y-4">
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Nome:</strong>
-        <p class="text-gray-700"><%= @member.name %></p>
+<%= render "modal", title: "Detalhes do Membro" do %>
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg">
+    <div class="flex items-center mb-6">
+      <div class="h-16 w-16 bg-pharma-teal-100 text-pharma-teal-600 dark:bg-gray-700 dark:text-pharma-teal-400 rounded-full flex items-center justify-center mr-4">
+        <%= lucide_icon('user-round', class: 'h-8 w-8') %>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold text-pharma-teal-700 dark:text-pharma-teal-400">
+          <%= @member.name %>
+        </h2>
+        <% if current_profile.admin? %>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            Associado ao perfil: <%= @member.profile.name %>
+          </p>
+        <% end %>
       </div>
     </div>
   </div>

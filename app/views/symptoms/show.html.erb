@@ -1,14 +1,22 @@
-<%= render "modal", title: "Detalhes" do %>
-  <div class="w-full bg-white p-2">
-    <div class="space-y-4">
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Nome:</strong>
-        <p class="text-gray-700"><%= @symptom.name %></p>
+<%= render "modal", title: "Detalhes do Sintoma" do %>
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg">
+    <div class="flex items-center mb-6">
+      <div class="h-16 w-16 bg-pharma-blue-100 text-pharma-blue-600 dark:bg-gray-700 dark:text-pharma-blue-400 rounded-full flex items-center justify-center mr-4">
+        <%= lucide_icon('thermometer', class: 'h-8 w-8') %>
       </div>
-
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Descrição:</strong>
-        <p class="text-gray-700"><%= @symptom.description %></p>
+      <h2 class="text-xl font-bold text-pharma-teal-700 dark:text-pharma-teal-400">
+        <%= @symptom.name %>
+      </h2>
+    </div>
+    
+    <div class="mb-6">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Descrição</h3>
+      <div class="card dark:bg-gray-700 p-4">
+        <% if @symptom.description.present? %>
+          <p class="text-gray-900 dark:text-white"><%= @symptom.description %></p>
+        <% else %>
+          <p class="text-gray-500 dark:text-gray-400">Nenhuma descrição cadastrada</p>
+        <% end %>
       </div>
     </div>
   </div>

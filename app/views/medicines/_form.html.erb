@@ -1,9 +1,11 @@
 <%= simple_form_for(@medicine, html: { class: "contents" }) do |form| %>
   <% if @medicine.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(@medicine.errors.count, "error") %> proibiram esse remédio de ser salvo:</h2>
-
-      <ul>
+    <div id="error_explanation" class="bg-health-red-50 dark:bg-health-red-900/20 text-health-red-600 dark:text-health-red-400 px-4 py-3 rounded-lg mb-6">
+      <div class="flex items-center mb-2">
+        <%= lucide_icon('alert-circle', class: 'h-5 w-5 mr-2') %>
+        <h2 class="font-medium"><%= pluralize(@medicine.errors.count, "erro") %> impediram o cadastro:</h2>
+      </div>
+      <ul class="list-disc pl-5 space-y-1 text-sm">
         <% @medicine.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
@@ -11,77 +13,157 @@
     </div>
   <% end %>
 
-  <div class="my-5">
-    <p class="text-slate-900 font-medium text-sm">Imagem</p>
-    <%= form.file_field :picture, label: "Imagem", class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full dark:text-slate-900" %>
-  </div>
-
-  <div class="my-5 text-slate-900">
-    <%= form.input :name, label: "Nome", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
-  </div>
-
-  <div class="my-5 text-slate-900 relative">
-    <label for="<%= form.object_name %>_unit" class="block text-slate-900 mb-2  font-medium text-sm">
-      Unidade
-      <span class="relative group inline-block">
-        <%= lucide_icon('info', class: 'inline-block w-4 h-4 text-blue-600 cursor-pointer ml-1') %>
-        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm rounded-lg py-1 px-2">
-          Quantidade de cartela/frasco do remédio em estoque.
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+    <div class="md:col-span-2">
+      <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
+        <div class="flex items-center mb-4">
+          <%= lucide_icon('info', class: 'h-5 w-5 text-pharma-teal-500 mr-2') %>
+          <h3 class="font-medium text-gray-900 dark:text-white">Informações do Medicamento</h3>
         </div>
-      </span>
-    </label>
-    <%= form.input :unit, as: :integer, label: false, input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
-  </div>
-
-  <div class="my-5 text-slate-900">
-    <%= form.input :is_liquid, as: :radio_buttons, label: "É liquido?", input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" } %>
-  </div>
-
-  <div class="my-5 text-slate-900 relative">
-    <label class="block text-slate-900 mb-2 font-medium text-sm">
-      Quantidade
-      <span class="relative group inline-block">
-        <%= lucide_icon('info', class: 'inline-block w-4 h-4 text-blue-600 cursor-pointer ml-1') %>
-        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm rounded-lg py-1 px-2">
-          Quantidade de comprimidos (ou ml se for líquido) em uma unidade. Exemplo: Benegripe possue 6 comprimidos em uma unidade.
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <%= form.label :picture, "Imagem do Medicamento", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <div class="mt-1 flex items-center justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-lg">
+              <div class="space-y-1 text-center">
+                <%= lucide_icon('upload', class: 'mx-auto h-12 w-12 text-gray-400') %>
+                <div class="flex text-sm text-gray-600 dark:text-gray-400">
+                  <label for="medicine_picture" class="relative cursor-pointer bg-white dark:bg-gray-700 rounded-md font-medium text-pharma-teal-600 dark:text-pharma-teal-400 hover:text-pharma-teal-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-pharma-teal-500">
+                    <span>Selecione uma imagem</span>
+                    <%= form.file_field :picture, class: "sr-only", accept: "image/*" %>
+                  </label>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  PNG, JPG até 5MB
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <%= form.label :name, "Nome do Medicamento", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+            <%= form.input :name, label: false, input_html: { class: "input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white" } %>
+          </div>
         </div>
-      </span>
-    </label>
-    <%= form.input :quantity, as: :integer, label: false, input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
-  </div>
-
-  <div class="my-5 text-slate-900">
-    <%= form.input :description, as: :text, label: "Descrição", input_html: { rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
-  </div>
-
-  <div class="my-5 text-slate-900">
-    <%= form.label :medicine_validity, "Validade", class: "font-medium text-sm" %>
-    <%= form.date_field :medicine_validity, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" %>
-  </div>
-
-  <div class="my-5 text-slate-900">
-    <%= form.label :medicine_insert, "Bula", class: "block text-slate-900 mb-2 font-medium text-sm dark:text-slate-900" %>
-    <%= form.file_field :medicine_insert, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" %>
-  </div>
-
-  <div class="my-5 text-slate-900 relative">
-    <label class="block text-slate-900 mb-2 font-medium text-sm">
-      Usado para
-      <span class="relative group inline-block">
-        <%= lucide_icon('info', class: 'inline-block w-4 h-4 text-blue-600 cursor-pointer ml-1') %>
-        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm rounded-lg py-1 px-2">
-          Para que é ou foi utilizado o remédio.
+      </div>
+    </div>
+    
+    <div class="md:col-span-2">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <div class="relative">
+            <%= form.label :unit, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center" do %>
+              Unidade
+              <div class="group ml-1">
+                <%= lucide_icon('help-circle', class: 'h-4 w-4 text-gray-400') %>
+                <div class="absolute z-10 hidden group-hover:block w-64 bg-gray-800 text-white text-xs rounded-lg py-2 px-3 right-0 -top-2">
+                  Quantidade de cartela/frasco do remédio em estoque.
+                </div>
+              </div>
+            <% end %>
+            <%= form.input :unit, as: :integer, label: false, input_html: { class: "input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white" } %>
+          </div>
         </div>
-      </span>
-    </label>
-    <%= form.input :used_to, label: false, input_html: { class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full text-slate-900" } %>
+        
+        <div>
+          <div class="relative">
+            <%= form.label :quantity, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center" do %>
+              Quantidade
+              <div class="group ml-1">
+                <%= lucide_icon('help-circle', class: 'h-4 w-4 text-gray-400') %>
+                <div class="absolute z-10 hidden group-hover:block w-64 bg-gray-800 text-white text-xs rounded-lg py-2 px-3 right-0 -top-2">
+                  Quantidade de comprimidos (ou ml se for líquido) em uma unidade.
+                </div>
+              </div>
+            <% end %>
+            <%= form.input :quantity, as: :integer, label: false, input_html: { class: "input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white" } %>
+          </div>
+        </div>
+        
+        <div>
+          <%= form.label :is_liquid, "Formato do Medicamento", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+          <div class="flex space-x-4 mt-2">
+            <div class="flex items-center">
+              <%= form.radio_button :is_liquid, false, class: "form-radio h-4 w-4 text-pharma-teal-600 dark:text-pharma-teal-400 border-gray-300 dark:border-gray-600 focus:ring-pharma-teal-500" %>
+              <label for="medicine_is_liquid_false" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                Sólido (comprimido)
+              </label>
+            </div>
+            <div class="flex items-center">
+              <%= form.radio_button :is_liquid, true, class: "form-radio h-4 w-4 text-pharma-teal-600 dark:text-pharma-teal-400 border-gray-300 dark:border-gray-600 focus:ring-pharma-teal-500" %>
+              <label for="medicine_is_liquid_true" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                Líquido
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div>
+      <%= form.label :medicine_validity, "Data de Validade", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+      <%= form.date_field :medicine_validity, class: "input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white" %>
+    </div>
+    
+    <div>
+      <div class="relative">
+        <%= form.label :used_to, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center" do %>
+          Usado para
+          <div class="group ml-1">
+            <%= lucide_icon('help-circle', class: 'h-4 w-4 text-gray-400') %>
+            <div class="absolute z-10 hidden group-hover:block w-64 bg-gray-800 text-white text-xs rounded-lg py-2 px-3 right-0 -top-2">
+              Para que é ou foi utilizado o remédio.
+            </div>
+          </div>
+        <% end %>
+        <%= form.input :used_to, label: false, input_html: { class: "input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white" } %>
+      </div>
+    </div>
+    
+    <div class="md:col-span-2">
+      <%= form.label :description, "Descrição", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+      <%= form.input :description, as: :text, label: false, input_html: { rows: 3, class: "input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white" } %>
+    </div>
+    
+    <div>
+      <%= form.label :medicine_insert, "Bula (PDF)", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" %>
+      <div class="mt-1 flex items-center justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-lg">
+        <div class="space-y-1 text-center">
+          <%= lucide_icon('file-text', class: 'mx-auto h-12 w-12 text-gray-400') %>
+          <div class="flex text-sm text-gray-600 dark:text-gray-400">
+            <label for="medicine_medicine_insert" class="relative cursor-pointer bg-white dark:bg-gray-700 rounded-md font-medium text-pharma-teal-600 dark:text-pharma-teal-400 hover:text-pharma-teal-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-pharma-teal-500">
+              <span>Selecione um PDF</span>
+              <%= form.file_field :medicine_insert, class: "sr-only", accept: "application/pdf" %>
+            </label>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400">
+            Apenas arquivos PDF
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <div>
+      <%= form.label :symptoms, "Sintomas Relacionados", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3" %>
+      <div class="bg-white dark:bg-gray-700 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-600 max-h-56 overflow-y-auto">
+        <div class="grid grid-cols-2 gap-2">
+          <%= form.association :symptoms, 
+                              as: :check_boxes, 
+                              collection: Symptom.all.sort_by(&:name), 
+                              label: false, 
+                              checked: @medicine.symptom_ids,
+                              item_wrapper_class: "flex items-center",
+                              input_html: { class: "form-checkbox h-4 w-4 text-pharma-teal-600 dark:text-pharma-teal-400 border-gray-300 dark:border-gray-600 rounded focus:ring-pharma-teal-500" },
+                              label_html: { class: "ml-2 block text-sm text-gray-700 dark:text-gray-300" } %>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="my-5 text-slate-900">
-    <%= form.association :symptoms, as: :check_boxes, collection: Symptom.all, label: "Sintomas", checked: @medicine.symptom_ids %>
-  </div>
-
-  <div class="inline">
-    <%= form.button :submit, @medicine.new_record? ? "Cadastrar" : "Editar", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+  <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 flex justify-end space-x-3">
+    <%= link_to "Cancelar", medicines_path, class: "btn-secondary" %>
+    <%= form.button :submit, 
+                    @medicine.new_record? ? "Cadastrar Medicamento" : "Atualizar Medicamento", 
+                    class: "btn-primary" %>
   </div>
 <% end %>

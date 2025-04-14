@@ -1,92 +1,131 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Medicare</title>
+    <title>Medicare - Sua Farmácia Pessoal</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-
     <%= stylesheet_link_tag 'rails_toastify', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'rails_toastify', 'data-turbo-track': 'reload' %>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <%= javascript_importmap_tags %>
   </head>
 
-  <body data-controller="theme">
+  <body data-controller="theme" class="font-sans antialiased">
     <% if profile_signed_in? %>
-      <div class="flex h-screen overflow-hidden">
-        <aside data-controller="sidebar" data-sidebar-target="sidebar" class="bg-blue-500 text-white dark:bg-slate-700 w-60 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-200 ease-in-out">
-          <div class="flex items-center justify-between px-4">
+      <div class="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-900">
+        <!-- Sidebar -->
+        <aside data-controller="sidebar" data-sidebar-target="sidebar" class="bg-teal-600 text-white dark:bg-slate-800 w-50 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-all duration-300 ease-in-out shadow-lg z-30 flex flex-col">
+          <div class="flex items-center justify-center px-4">
             <div id="logo" class="flex items-center space-x-2">
-              <span class="text-3xl font-bold" data-sidebar-target="logo"><%= lucide_icon('briefcase-medical', class: 'h-10 w-10') %></span>
-              <span class="text-3xl font-bold hidden md:block" data-sidebar-target="fullLogo">Medicare</span>
+              <span class="text-3xl font-bold text-white" data-sidebar-target="logo"><%= lucide_icon('briefcase-medical', class: 'h-10 w-10') %></span>
+              <span class="text-2xl font-bold text-white" data-sidebar-target="menuText">Medicare</span>
             </div>
             <button data-action="sidebar#toggle" class="text-white md:hidden focus:outline-none">
-              <%= lucide_icon('menu', class: 'h-6 w-6') %>
+              <%= lucide_icon('x', class: 'h-6 w-6') %>
             </button>
           </div>
-          <nav>
-            <%= link_to root_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
-              <%= lucide_icon('home', class: 'h-6 w-6 inline-block') %>
-              <span class="ml-3 hidden md:inline">Home</span>
+          
+          <nav class="mt-8 flex-1 overflow-y-auto">
+            <%= link_to root_path, class: "block py-3 px-4 rounded-lg transition duration-200 hover:bg-teal-700 dark:hover:bg-slate-700 mb-2 flex items-center" do %>
+              <%= lucide_icon('home', class: 'h-5 w-5 mr-3 flex-shrink-0') %>
+              <span data-sidebar-target="menuText">Home</span>
             <% end %>
-            <%= link_to medicines_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
-              <%= lucide_icon('pill', class: 'h-6 w-6 inline-block') %>
-              <span class="ml-3 hidden md:inline">Remédios</span>
+            
+            <%= link_to medicines_path, class: "block py-3 px-4 rounded-lg transition duration-200 hover:bg-teal-700 dark:hover:bg-slate-700 mb-2 flex items-center" do %>
+              <%= lucide_icon('pill', class: 'h-5 w-5 mr-3 flex-shrink-0') %>
+              <span data-sidebar-target="menuText">Remédios</span>
             <% end %>
-            <%= link_to symptoms_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
-              <%= lucide_icon('thermometer', class: 'h-6 w-6 inline-block') %>
-              <span class="ml-3 hidden md:inline">Sintomas</span>
+            
+            <%= link_to symptoms_path, class: "block py-3 px-4 rounded-lg transition duration-200 hover:bg-teal-700 dark:hover:bg-slate-700 mb-2 flex items-center" do %>
+              <%= lucide_icon('thermometer', class: 'h-5 w-5 mr-3 flex-shrink-0') %>
+              <span data-sidebar-target="menuText">Sintomas</span>
             <% end %>
-            <%= link_to members_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
-              <%= lucide_icon('user-round-plus', class: 'h-6 w-6 inline-block') %>
-              <span class="ml-3 hidden md:inline">Membros</span>
+            
+            <%= link_to members_path, class: "block py-3 px-4 rounded-lg transition duration-200 hover:bg-teal-700 dark:hover:bg-slate-700 mb-2 flex items-center" do %>
+              <%= lucide_icon('user-round-plus', class: 'h-5 w-5 mr-3 flex-shrink-0') %>
+              <span data-sidebar-target="menuText">Membros</span>
             <% end %>
-            <%= link_to activities_medicines_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
-              <%= lucide_icon('history', class: 'h-6 w-6 inline-block') %>
-              <span class="ml-3 hidden md:inline">Atividades</span>
+            
+            <%= link_to activities_medicines_path, class: "block py-3 px-4 rounded-lg transition duration-200 hover:bg-teal-700 dark:hover:bg-slate-700 mb-2 flex items-center" do %>
+              <%= lucide_icon('history', class: 'h-5 w-5 mr-3 flex-shrink-0') %>
+              <span data-sidebar-target="menuText">Atividades</span>
             <% end %>
+            
             <% if current_profile.role == 'admin' %>
-              <%= link_to profiles_path, class: "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700" do %>
-                <%= lucide_icon('users', class: 'h-6 w-6 inline-block') %>
-                <span class="ml-3 hidden md:inline">Perfils</span>
+              <%= link_to profiles_path, class: "block py-3 px-4 rounded-lg transition duration-200 hover:bg-teal-700 dark:hover:bg-slate-700 mb-2 flex items-center" do %>
+                <%= lucide_icon('users', class: 'h-5 w-5 mr-3 flex-shrink-0') %>
+                <span data-sidebar-target="menuText">Perfis</span>
               <% end %>
             <% end %>
-          </nav>
-        </aside>
-
-        <div class="flex-1 flex flex-col">
-          <header class="bg-white shadow-md py-4 px-8 flex justify-between items-center dark:bg-gray-800 dark:text-white">
-            <button data-action="theme#toggle" class="text-slate-400 hover:text-slate-600 dark:text-white">
-              <%= lucide_icon('moon', class: 'h-6 w-6 inline-block dark:hidden') %>
-              <%= lucide_icon('sun', class: 'h-6 w-6 inline-block hidden dark:block') %>
-            </button>
-            <div class="flex items-center space-x-4">   
-              <span class="text-slate-700 dark:text-white">Olá, <%= current_profile.name %> (<%= current_profile.email %>)</span>
-              <%= form_tag destroy_profile_session_path, method: :delete, class: "inline" do %>
-                <button type="submit" class="text-slate-400 hover:text-slate-600 dark:text-white flex items-center space-x-2">
-                  <%= lucide_icon('log-out', class: 'h-6 w-6 inline-block') %>
-                  <span>Sair</span>
-                </button>
+            
+            <!-- Botão de Sair - adicionado na navegação principal para ter o mesmo estilo dos outros itens -->
+            <div class="mt-auto border-t border-teal-700 dark:border-slate-700">
+              <%= link_to destroy_profile_session_path, method: :delete, class: "mt-4 block py-3 px-4 rounded-lg transition duration-200 hover:bg-teal-700 dark:hover:bg-slate-700 mb-2 flex items-center", data: { turbo_method: :delete } do %>
+                <%= lucide_icon('log-out', class: 'h-5 w-5 mr-3 flex-shrink-0') %>
+                <span data-sidebar-target="menuText">Sair</span>
               <% end %>
             </div>
-          </header>
-          <main class="flex-1 overflow-auto p-8 dark:bg-gray-900 dark:text-white">
-            <button data-action="sidebar#toggle" class="fixed bottom-4 left-4 bg-blue-600 text-white p-2 rounded-full shadow-md hover:bg-blue-700 dark:bg-slate-700 dark:text-white">
-              <%= lucide_icon('arrow-left', class: 'h-6 w-6') %>
+          </nav>
+          
+          <!-- Botão toggle no canto inferior esquerdo absolutamente posicionado -->
+          <div class="absolute bottom-3 left-3 z-10">
+            <button 
+              data-action="sidebar#toggle" 
+              class="h-8 w-8 flex items-center justify-center bg-teal-700 dark:bg-slate-700 rounded-full text-white hover:bg-teal-800 dark:hover:bg-slate-600 transition-colors duration-200"
+              title="Expandir/Recolher sidebar"
+            >
+              <%= lucide_icon('chevrons-left', class: 'h-5 w-5', data: { sidebar_target: 'sidebarToggle' }) %>
             </button>
+          </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+          <!-- Header -->
+          <header class="bg-white dark:bg-gray-800 shadow-sm py-3 px-6 flex justify-between items-center">
+            <div class="flex items-center lg:hidden">
+              <button data-action="sidebar#toggle" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 focus:outline-none">
+                <%= lucide_icon('menu', class: 'h-6 w-6') %>
+              </button>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+              <button data-action="theme#toggle" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 focus:outline-none">
+                <%= lucide_icon('moon', class: 'h-5 w-5 dark:hidden') %>
+                <%= lucide_icon('sun', class: 'h-5 w-5 hidden dark:block') %>
+              </button>
+            </div>
+            
+            <div class="flex items-center">
+              <div class="flex items-center mr-4">
+                <div class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 dark:bg-slate-700 dark:text-teal-300 flex items-center justify-center mr-2">
+                  <%= lucide_icon('user', class: 'h-4 w-4') %>
+                </div>
+                <span class="text-sm text-gray-700 dark:text-gray-300 hidden sm:inline-block">
+                  <%= current_profile.name %>
+                </span>
+              </div>
+            </div>
+          </header>
+
+          <!-- Main content -->
+          <main class="flex-1 overflow-auto p-6 bg-gray-50 dark:bg-gray-900">
             <%= rails_toastify_container %>
             <%= rails_toastify_script %>
-
+            
             <%= yield %>
             <%= turbo_frame_tag "modal", target: "_top" %>
           </main>
         </div>
       </div>
     <% else %>
-      <%= yield %>
+      <div class="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 flex flex-col">
+        <%= yield %>
+      </div>
     <% end %>
 
     <% if notice %>
@@ -95,7 +134,7 @@
           { theme: '<%= RailsToastify.configuration.notice_theme %>',
             type: '<%= RailsToastify.configuration.notice_type %>',
             animation: '<%= RailsToastify.configuration.notice_animation %>',
-            duration: <%= RailsToastify.configuration.notice_duration %>
+            duration: '<%= RailsToastify.configuration.notice_duration %>'
           })
       </script>
     <% end %>
@@ -106,7 +145,7 @@
           { theme: '<%= RailsToastify.configuration.alert_theme %>',
             type: '<%= RailsToastify.configuration.alert_type %>',
             animation: '<%= RailsToastify.configuration.alert_animation %>',
-            duration: <%= RailsToastify.configuration.alert_duration %>
+            duration: '<%= RailsToastify.configuration.alert_duration %>'
           })
       </script>
     <% end %>

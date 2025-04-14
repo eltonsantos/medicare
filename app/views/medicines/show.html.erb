@@ -1,67 +1,119 @@
-<%= render "modal", title: "Detalhes" do %>
-  <div class="w-full bg-white p-2">
-    <div class="space-y-4">
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Imagem:</strong>
-        <% if @medicine.picture.attached? %>
-          <%= image_tag url_for(@medicine.picture), class: "w-full max-w-[200px] h-auto object-contain border border-gray-300 rounded-md" %>
-        <% else %>
-          <%= image_tag "logo-default.png", class: "w-full max-w-[200px] h-auto object-contain border border-gray-300 rounded-md" %>
-        <% end %>
-      </div>
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Nome:</strong>
-        <p class="text-gray-700"><%= @medicine.name %></p>
-      </div>
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Unidade:</strong>
-        <p class="text-gray-700"><%= @medicine.unit %></p>
-      </div>
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">É líquido?</strong>
-        <p class="text-gray-700">
-          <% if @medicine.is_liquid %>
-            Sim
+<%= render "modal", title: "Detalhes do Medicamento" do %>
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg">
+    <div class="flex flex-col md:flex-row gap-6">
+      <div class="md:w-1/3">
+        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center justify-center">
+          <% if @medicine.picture.attached? %>
+            <%= image_tag url_for(@medicine.picture), class: "w-full h-auto max-h-48 object-contain" %>
           <% else %>
-            Não
+            <div class="w-32 h-32 bg-pharma-teal-100 text-pharma-teal-600 dark:bg-gray-600 dark:text-pharma-teal-300 rounded-full flex items-center justify-center">
+              <%= lucide_icon('pill', class: 'h-16 w-16') %>
+            </div>
           <% end %>
-        </p>
-      </div>
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Quantidade:</strong>
-        <p class="text-gray-700"><%= @medicine.quantity %></p>
-      </div>
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Descrição:</strong>
-        <p class="text-gray-700"><%= @medicine.description %></p>
-      </div>
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Validade:</strong>
-        <p class="text-gray-700"><%= @medicine.medicine_validity.strftime("%d/%m/%Y") %></p>
-      </div>
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Bula:</strong>
+        </div>
+        
         <% if @medicine.medicine_insert.attached? %>
-          <%= link_to url_for(@medicine.medicine_insert), download: true, class: "text-blue-600 hover:underline flex items-center" do %>
-            <%= lucide_icon('file-down', class: 'inline-block mr-1 h-5 w-5') %>
-          <% end %>
-        <% else %>
-          <p class="text-gray-700">Nenhuma bula anexada.</p>
+          <div class="mt-4 p-4 bg-pharma-blue-50 dark:bg-gray-700 rounded-lg">
+            <h3 class="font-medium text-gray-900 dark:text-white mb-2">Bula do Medicamento</h3>
+            <%= link_to url_for(@medicine.medicine_insert), download: true, class: "btn-secondary w-full flex items-center justify-center" do %>
+              <%= lucide_icon('file-down', class: 'mr-2 h-5 w-5') %>
+              Baixar PDF
+            <% end %>
+          </div>
         <% end %>
       </div>
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Sintomas:</strong>
-        <p class="text-gray-700">
-          <% @medicine.symptoms.each do |symptom| %>
-            <span class="inline-block bg-yellow-400 text-white text-sm px-3 py-1 rounded-md">
-              <%= symptom.name %>
-            </span>
-          <% end %>
-        </p>
-      </div>
-      <div class="border-b border-gray-200 pb-2">
-        <strong class="block font-medium mb-1 text-slate-900">Usado para:</strong>
-        <p class="text-gray-700"><%= @medicine.used_to %></p>
+      
+      <div class="md:w-2/3">
+        <h2 class="text-xl font-bold text-pharma-teal-700 dark:text-pharma-teal-400 mb-4">
+          <%= @medicine.name %>
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div class="card dark:bg-gray-700 p-4">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Unidade</span>
+            <p class="font-medium text-gray-900 dark:text-white"><%= @medicine.unit %></p>
+          </div>
+          
+          <div class="card dark:bg-gray-700 p-4">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Formato</span>
+            <p class="font-medium text-gray-900 dark:text-white">
+              <% if @medicine.is_liquid %>
+                <span class="flex items-center">
+                  <%= lucide_icon('droplets', class: 'h-4 w-4 mr-1 text-pharma-blue-500') %>
+                  Líquido
+                </span>
+              <% else %>
+                <span class="flex items-center">
+                  <%= lucide_icon('pill', class: 'h-4 w-4 mr-1 text-pharma-teal-500') %>
+                  Sólido
+                </span>
+              <% end %>
+            </p>
+          </div>
+          
+          <div class="card dark:bg-gray-700 p-4">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Quantidade</span>
+            <p class="font-medium text-gray-900 dark:text-white"><%= @medicine.quantity %></p>
+          </div>
+          
+          <div class="card dark:bg-gray-700 p-4">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Validade</span>
+            <% days_to_expiry = (@medicine.medicine_validity.to_date - Date.today).to_i %>
+            <% if days_to_expiry <= 30 && days_to_expiry > 0 %>
+              <p class="font-medium text-health-red-600 dark:text-health-red-400 flex items-center">
+                <%= lucide_icon('alert-triangle', class: 'h-4 w-4 mr-1') %>
+                <%= @medicine.medicine_validity.strftime("%d/%m/%Y") %>
+                <span class="ml-2 text-sm">(Expira em <%= days_to_expiry %> dias)</span>
+              </p>
+            <% elsif days_to_expiry <= 0 %>
+              <p class="font-medium text-health-red-600 dark:text-health-red-400 flex items-center">
+                <%= lucide_icon('alert-triangle', class: 'h-4 w-4 mr-1') %>
+                VENCIDO
+              </p>
+            <% else %>
+              <p class="font-medium text-gray-900 dark:text-white">
+                <%= @medicine.medicine_validity.strftime("%d/%m/%Y") %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+        
+        <div class="mb-6">
+          <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Usado para tratar</h3>
+          <div class="card dark:bg-gray-700 p-4">
+            <% if @medicine.used_to.present? %>
+              <p class="text-gray-900 dark:text-white"><%= @medicine.used_to %></p>
+            <% else %>
+              <p class="text-gray-500 dark:text-gray-400">Nenhuma informação cadastrada</p>
+            <% end %>
+          </div>
+        </div>
+        
+        <div class="mb-6">
+          <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Descrição</h3>
+          <div class="card dark:bg-gray-700 p-4">
+            <% if @medicine.description.present? %>
+              <p class="text-gray-900 dark:text-white"><%= @medicine.description %></p>
+            <% else %>
+              <p class="text-gray-500 dark:text-gray-400">Nenhuma descrição cadastrada</p>
+            <% end %>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Sintomas relacionados</h3>
+          <div class="flex flex-wrap gap-2">
+            <% if @medicine.symptoms.any? %>
+              <% @medicine.symptoms.each do |symptom| %>
+                <span class="badge badge-blue">
+                  <%= symptom.name %>
+                </span>
+              <% end %>
+            <% else %>
+              <p class="text-gray-500 dark:text-gray-400">Nenhum sintoma relacionado</p>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
   </div>

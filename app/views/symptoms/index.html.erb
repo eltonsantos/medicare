@@ -1,41 +1,93 @@
 <% content_for :title, "Sintomas" %>
 
-<div class="flex justify-between items-center mb-6">
-  <h1 class="font-bold text-4xl text-blue-500">Sintomas</h1>
-  <%= link_to "Cadastrar sintoma", new_symptom_path, class: "rounded-lg py-3 px-5 bg-blue-400 hover:bg-blue-500 text-white block font-medium", data: { turbo_frame: "modal" } %>
-</div>
+<div class="mb-8">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <div>
+      <h1 class="text-3xl font-bold text-pharma-teal-700 dark:text-pharma-teal-400">Sintomas</h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-1">Gerenciamento dos sintomas para medicação</p>
+    </div>
+    <%= link_to new_symptom_path, 
+                class: "btn-primary flex items-center justify-center md:justify-start",
+                data: { turbo_frame: "modal" } do %>
+      <%= lucide_icon('plus', class: 'h-5 w-5 mr-2') %>
+      <span>Cadastrar Sintoma</span>
+    <% end %>
+  </div>
 
-<div id="symptoms" class="w-full">
-  <% if @symptoms.any? %>
-    <table class="min-w-full divide-y divide-gray-200 dark:bg-gray-900">
-      <thead class="bg-blue-50 dark:bg-gray-700">
-        <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-blue-50 uppercase tracking-wider">Nome</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-blue-50 uppercase tracking-wider">Ações</th>
-        </tr>
-      </thead>
-      <tbody class="bg-white dark:bg-slate-700 divide-y divide-gray-200 dark:divide-gray-600">
-        <% @symptoms.each do |symptom| %>
-          <tr id="<%= dom_id symptom %>">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm dark:text-blue-50 text-gray-900"><%= symptom.name %></div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-left text-sm dark:text-blue-50 font-medium">
-              <%= link_to symptom, class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer", data: { turbo_frame: "modal" } do %>
-                <%= lucide_icon('eye', class: 'inline-block text-blue-600 cursor-pointer') %>
-              <% end %>
-              <%= link_to edit_symptom_path(symptom), class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer", data: { turbo_frame: "modal" } do %>
-                <%= lucide_icon('file-pen-line', class: 'inline-block text-blue-600 cursor-pointer') %>
-              <% end %>
-              <%= link_to symptom, method: :delete, class: "ml-2 rounded-lg py-2 px-4 text-blue-600 hover:bg-gray-100 inline-block font-medium cursor-pointer", data: { turbo_method: :delete, turbo_confirm: "Tem certeza?" } do %>
-                <%= lucide_icon('circle-x', class: 'inline-block text-red-600 cursor-pointer') %>
-              <% end %>
-            </td>
-          </tr>
+  <div class="mb-4 p-4 bg-pharma-teal-50 dark:bg-gray-800 rounded-lg border border-pharma-teal-100 dark:border-gray-700">
+    <div class="flex items-center">
+      <%= lucide_icon('info', class: 'h-5 w-5 text-pharma-teal-500 mr-3') %>
+      <p class="text-gray-700 dark:text-gray-300">
+        Registre os sintomas que podem ser associados aos medicamentos.
+      </p>
+    </div>
+  </div>
+
+  <div id="symptoms" class="w-full overflow-hidden bg-white dark:bg-gray-800 rounded-lg shadow-soft">
+    <% if @symptoms.any? %>
+      <div class="overflow-x-auto">
+        <table class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead class="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th class="table-header w-3/4">Nome</th>
+              <th class="table-header w-1/4">Ações</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <% @symptoms.each do |symptom| %>
+              <tr id="<%= dom_id symptom %>" class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                <td class="table-cell">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10 bg-pharma-blue-100 text-pharma-blue-600 dark:bg-gray-700 dark:text-pharma-blue-400 rounded-full flex items-center justify-center mr-3">
+                      <%= lucide_icon('thermometer', class: 'h-5 w-5') %>
+                    </div>
+                    <div class="font-medium text-gray-900 dark:text-white"><%= symptom.name %></div>
+                  </div>
+                </td>
+                <td class="table-cell">
+                  <div class="flex space-x-1">
+                    <%= link_to symptom, 
+                                class: "p-2 text-pharma-blue-600 hover:bg-pharma-blue-50 dark:text-pharma-blue-400 dark:hover:bg-gray-700 rounded-full", 
+                                title: "Visualizar",
+                                data: { turbo_frame: "modal" } do %>
+                      <%= lucide_icon('eye', class: 'h-5 w-5') %>
+                    <% end %>
+                    
+                    <%= link_to edit_symptom_path(symptom), 
+                                class: "p-2 text-pharma-teal-600 hover:bg-pharma-teal-50 dark:text-pharma-teal-400 dark:hover:bg-gray-700 rounded-full", 
+                                title: "Editar",
+                                data: { turbo_frame: "modal" } do %>
+                      <%= lucide_icon('pencil', class: 'h-5 w-5') %>
+                    <% end %>
+                    
+                    <%= link_to symptom, 
+                                method: :delete, 
+                                class: "p-2 text-health-red-600 hover:bg-health-red-50 dark:text-health-red-400 dark:hover:bg-gray-700 rounded-full", 
+                                title: "Excluir",
+                                data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este sintoma?" } do %>
+                      <%= lucide_icon('trash', class: 'h-5 w-5') %>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="flex flex-col items-center justify-center py-12 px-4 text-center">
+        <%= lucide_icon('thermometer-off', class: 'h-16 w-16 text-gray-400 mb-4') %>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nenhum sintoma cadastrado</h3>
+        <p class="text-gray-500 dark:text-gray-400 max-w-md mb-6">
+          Cadastre sintomas para associá-los aos medicamentos.
+        </p>
+        <%= link_to new_symptom_path, 
+                    class: "btn-primary inline-flex items-center", 
+                    data: { turbo_frame: "modal" } do %>
+          <%= lucide_icon('plus', class: 'mr-2 h-5 w-5') %>
+          Cadastrar primeiro sintoma
         <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p>Nenhum sintoma registrado</p>
-  <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

@@ -1,53 +1,109 @@
 <% content_for :title, "Atividades" %>
 
-<div class="flex justify-between items-center mb-6">
-  <h1 class="font-bold text-4xl text-blue-500">Atividades</h1>
-</div>
+<div class="mb-8">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <div>
+      <h1 class="text-3xl font-bold text-pharma-teal-700 dark:text-pharma-teal-400">Histórico de Atividades</h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-1">Registro de todas as alterações em medicamentos</p>
+    </div>
+    <%= link_to medicines_path, 
+                class: "btn-secondary flex items-center justify-center md:justify-start" do %>
+      <%= lucide_icon('arrow-left', class: 'h-5 w-5 mr-2') %>
+      <span>Voltar para Remédios</span>
+    <% end %>
+  </div>
 
-<div id="activities" class="w-full">
-  <% if @activities.any? %>
-    <table class="min-w-full divide-y divide-gray-200 dark:bg-gray-900">
-      <thead class="bg-blue-50 dark:bg-gray-700">
-        <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium dark:text-blue-50 text-gray-500 uppercase tracking-wider">ID do remédio</th>
-          <th class="px-6 py-3 text-left text-xs font-medium dark:text-blue-50 text-gray-500 uppercase tracking-wider">Evento</th>
-          <th class="px-6 py-3 text-left text-xs font-medium dark:text-blue-50 text-gray-500 uppercase tracking-wider">Data da alteração</th>
-          <% if current_profile.role == 'admin' %>
-            <th class="px-6 py-3 text-left text-xs font-medium dark:text-blue-50 text-gray-500 uppercase tracking-wider">Usuário</th>
-          <% end %>
-          <th class="px-6 py-3 text-left text-xs font-medium dark:text-blue-50 text-gray-500 uppercase tracking-wider">Alteração</th>
-        </tr>
-      </thead>
-      <tbody class="bg-white dark:bg-slate-700 divide-y divide-gray-200 dark:divide-gray-600">
-        <% @activities.each do |activity| %>
-          <tr id="<%= dom_id activity %>">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm dark:text-blue-50 text-gray-900"><%= activity.item_id %></div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm dark:text-blue-50 text-gray-900"><%= format_event_type(activity.event) %></div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm dark:text-blue-50 text-gray-900"><%= activity.created_at.strftime("%d/%m/%Y - %H:%M") %></div>
-            </td>
-            <% if current_profile.role == 'admin' %>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm dark:text-blue-50 text-gray-900">
-                  <% profile = Profile.find_by_id(activity.whodunnit) %>
-                  <% unless profile.nil? %>
-                    <%= profile.email %>
+  <div class="mb-4 p-4 bg-pharma-teal-50 dark:bg-gray-800 rounded-lg border border-pharma-teal-100 dark:border-gray-700">
+    <div class="flex items-center">
+      <%= lucide_icon('info', class: 'h-5 w-5 text-pharma-teal-500 mr-3') %>
+      <p class="text-gray-700 dark:text-gray-300">
+        Este histórico mostra todas as alterações feitas nos medicamentos ao longo do tempo.
+      </p>
+    </div>
+  </div>
+
+  <div id="activities" class="w-full overflow-hidden bg-white dark:bg-gray-800 rounded-lg shadow-soft">
+    <% if @activities.any? %>
+      <div class="overflow-x-auto">
+        <table class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead class="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th class="table-header">ID</th>
+              <th class="table-header">Evento</th>
+              <th class="table-header">Data da alteração</th>
+              <% if current_profile.role == 'admin' %>
+                <th class="table-header">Usuário</th>
+              <% end %>
+              <th class="table-header">Alterações</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <% @activities.each do |activity| %>
+              <tr id="<%= dom_id activity %>" class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                <td class="table-cell">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-8 w-8 bg-pharma-blue-100 text-pharma-blue-600 dark:bg-gray-700 dark:text-pharma-blue-400 rounded-full flex items-center justify-center mr-3">
+                      <%= lucide_icon('file-text', class: 'h-4 w-4') %>
+                    </div>
+                    <span class="font-medium text-gray-900 dark:text-white"><%= activity.item_id %></span>
+                  </div>
+                </td>
+                <td class="table-cell">
+                  <% case activity.event %>
+                  <% when 'create' %>
+                    <span class="badge badge-green">
+                      <%= lucide_icon('plus', class: 'h-3.5 w-3.5 mr-1') %>
+                      Criação
+                    </span>
+                  <% when 'update' %>
+                    <span class="badge badge-blue">
+                      <%= lucide_icon('pencil', class: 'h-3.5 w-3.5 mr-1') %>
+                      Atualização
+                    </span>
+                  <% when 'destroy' %>
+                    <span class="badge badge-red">
+                      <%= lucide_icon('trash', class: 'h-3.5 w-3.5 mr-1') %>
+                      Exclusão
+                    </span>
+                  <% else %>
+                    <%= format_event_type(activity.event) %>
                   <% end %>
-                </div>
-              </td>
+                </td>
+                <td class="table-cell">
+                  <span class="text-gray-900 dark:text-white"><%= activity.created_at.strftime("%d/%m/%Y") %></span>
+                  <span class="text-gray-500 dark:text-gray-400 text-sm ml-2"><%= activity.created_at.strftime("%H:%M") %></span>
+                </td>
+                <% if current_profile.role == 'admin' %>
+                  <td class="table-cell">
+                    <% profile = Profile.find_by_id(activity.whodunnit) %>
+                    <% if profile %>
+                      <div class="flex items-center">
+                        <div class="w-6 h-6 bg-pharma-teal-100 text-pharma-teal-600 dark:bg-gray-700 dark:text-pharma-teal-400 rounded-full flex items-center justify-center mr-2">
+                          <%= lucide_icon('user', class: 'h-3 w-3') %>
+                        </div>
+                        <span class="text-gray-900 dark:text-white"><%= profile.name %></span>
+                      </div>
+                    <% else %>
+                      <span class="text-gray-500 dark:text-gray-400">Usuário não encontrado</span>
+                    <% end %>
+                  </td>
+                <% end %>
+                <td class="table-cell">
+                  <div class="text-sm text-gray-900 dark:text-white"><%= format_changes(activity.object_changes, activity.event) %></div>
+                </td>
+              </tr>
             <% end %>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm dark:text-blue-50 text-gray-900"><%= format_changes(activity.object_changes, activity.event) %></div>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p>Nenhuma atividade registrada</p>
-  <% end %> 
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="flex flex-col items-center justify-center py-12 px-4 text-center">
+        <%= lucide_icon('history', class: 'h-16 w-16 text-gray-400 mb-4') %>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nenhuma atividade registrada</h3>
+        <p class="text-gray-500 dark:text-gray-400 max-w-md mb-6">
+          Quando houver alterações em medicamentos, elas serão exibidas aqui.
+        </p>
+      </div>
+    <% end %> 
+  </div>
 </div>

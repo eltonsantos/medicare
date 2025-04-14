@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { Turbo } from "@hotwired/turbo-rails";
 
 export default class extends Controller {
   static targets = ["modal", "dialog"];
@@ -30,6 +31,17 @@ export default class extends Controller {
 
   close() {
     this.hide();
+    
+    // Redirecionar para a lista adequada com base na URL atual
+    const url = window.location.href;
+    
+    if (url.includes('/medicines/') && (url.includes('/edit') || url.includes('/new'))) {
+      Turbo.visit('/medicines');
+    } else if (url.includes('/symptoms/') && (url.includes('/edit') || url.includes('/new'))) {
+      Turbo.visit('/symptoms');
+    } else if (url.includes('/members/') && (url.includes('/edit') || url.includes('/new'))) {
+      Turbo.visit('/members');
+    }
   }
 
   closeWithBackdrop(event) {
