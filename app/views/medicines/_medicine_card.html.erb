@@ -1,0 +1,100 @@
+<div id="<%= dom_id medicine %>" class="p-4 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+  <div class="flex items-center mb-3">
+    <% if medicine.picture.attached? %>
+      <div class="flex-shrink-0 h-12 w-12 mr-3">
+        <%= image_tag url_for(medicine.picture), class: "h-12 w-12 rounded-full object-cover" %>
+      </div>
+    <% else %>
+      <div class="flex-shrink-0 h-12 w-12 bg-pharma-teal-100 text-pharma-teal-600 dark:bg-gray-700 dark:text-pharma-teal-400 rounded-full flex items-center justify-center mr-3">
+        <%= lucide_icon('pill', class: 'h-5 w-5') %>
+      </div>
+    <% end %>
+    <div>
+      <div class="font-medium text-lg text-gray-900 dark:text-white"><%= medicine.name %></div>
+      <% days_to_expiry = (medicine.medicine_validity.to_date - Date.today).to_i %>
+      <% if days_to_expiry <= 30 && days_to_expiry > 0 %>
+        <span class="badge badge-red">
+          Vence em <%= medicine.medicine_validity.strftime("%d/%m/%Y") %>
+        </span>
+      <% elsif days_to_expiry <= 0 %>
+        <span class="badge bg-health-red-500 text-white">
+          Vencido
+        </span>
+      <% else %>
+        <span class="badge badge-green">
+          Validade: <%= medicine.medicine_validity.strftime("%d/%m/%Y") %>
+        </span>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="grid grid-cols-2 gap-2 mb-3">
+    <div class="text-sm">
+      <span class="text-gray-500 dark:text-gray-400">Unidade:</span>
+      <span class="text-gray-900 dark:text-white"><%= medicine.unit %></span>
+    </div>
+    
+    <div class="text-sm">
+      <span class="text-gray-500 dark:text-gray-400">Quantidade:</span>
+      <span class="text-gray-900 dark:text-white"><%= medicine.quantity %></span>
+    </div>
+    
+    <div class="text-sm">
+      <span class="text-gray-500 dark:text-gray-400">Formato:</span>
+      <span class="text-gray-900 dark:text-white">
+        <% if medicine.is_liquid %>
+          <span class="flex items-center">
+            <%= lucide_icon('droplets', class: 'h-3.5 w-3.5 mr-1 text-pharma-blue-500') %>
+            Líquido
+          </span>
+        <% else %>
+          <span class="flex items-center">
+            <%= lucide_icon('pill', class: 'h-3.5 w-3.5 mr-1 text-pharma-teal-500') %>
+            Sólido
+          </span>
+        <% end %>
+      </span>
+    </div>
+    
+    <% if current_profile.role == 'admin' %>
+      <div class="text-sm">
+        <span class="text-gray-500 dark:text-gray-400">Usuário:</span>
+        <span class="text-gray-900 dark:text-white"><%= medicine.profile.name %></span>
+      </div>
+    <% end %>
+  </div>
+  
+  <% if medicine.symptoms.any? %>
+    <div class="flex flex-wrap gap-1 mb-3">
+      <% medicine.symptoms.each do |symptom| %>
+        <span class="badge badge-blue">
+          <%= symptom.name %>
+        </span>
+      <% end %>
+    </div>
+  <% end %>
+  
+  <div class="flex space-x-2 mt-2">
+    <%= link_to medicine, 
+              class: "p-2 text-pharma-blue-600 hover:bg-pharma-blue-50 dark:text-pharma-blue-400 dark:hover:bg-gray-700 rounded-full", 
+              title: "Visualizar",
+              data: { turbo_frame: "modal" } do %>
+      <%= lucide_icon('eye', class: 'h-5 w-5') %>
+    <% end %>
+    
+    <%= link_to edit_medicine_path(medicine), 
+              class: "p-2 text-pharma-teal-600 hover:bg-pharma-teal-50 dark:text-pharma-teal-400 dark:hover:bg-gray-700 rounded-full", 
+              title: "Editar",
+              data: { turbo_frame: "modal" } do %>
+      <%= lucide_icon('pencil', class: 'h-5 w-5') %>
+    <% end %>
+    
+    <%= link_to medicine, 
+              method: :delete, 
+              class: "p-2 text-health-red-600 hover:bg-health-red-50 dark:text-health-red-400 dark:hover:bg-gray-700 rounded-full", 
+              title: "Excluir",
+              data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este remédio?" } do %>
+      <%= lucide_icon('trash', class: 'h-5 w-5') %>
+    <% end %>
+  </div>
+</div> 

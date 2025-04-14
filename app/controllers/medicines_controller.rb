@@ -5,7 +5,7 @@ class MedicinesController < ApplicationController
   before_action :authorize_access, only: %i[show edit update destroy]
 
   def index
-    @medicines = if current_profile.admin?
+    medicines_base = if current_profile.admin?
                    Medicine.includes(:profile, :symptoms, :picture_attachment)
                            .ordered
                  else
@@ -13,6 +13,10 @@ class MedicinesController < ApplicationController
                            .includes(:symptoms, :picture_attachment)
                            .ordered
                  end
+    
+    @expired_medicines = medicines_base.expired
+    @expiring_soon_medicines = medicines_base.expiring_soon.where("medicine_validity >= ?", Date.today)
+    @regular_medicines = medicines_base.where("medicine_validity > ?", 30.days.from_now)
   end
 
   def show

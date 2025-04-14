@@ -24,243 +24,148 @@
   </div>
 
   <div id="medicines" class="w-full overflow-hidden bg-white dark:bg-gray-800 rounded-lg shadow-soft">
-    <% if @medicines.any? %>
-      <div class="lg:hidden">
-        <% @medicines.each do |medicine| %>
-          <div id="<%= dom_id medicine %>" class="p-4 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-            <div class="flex items-center mb-3">
-              <% if medicine.picture.attached? %>
-                <div class="flex-shrink-0 h-12 w-12 mr-3">
-                  <%= image_tag url_for(medicine.picture), class: "h-12 w-12 rounded-full object-cover" %>
-                </div>
-              <% else %>
-                <div class="flex-shrink-0 h-12 w-12 bg-pharma-teal-100 text-pharma-teal-600 dark:bg-gray-700 dark:text-pharma-teal-400 rounded-full flex items-center justify-center mr-3">
-                  <%= lucide_icon('pill', class: 'h-5 w-5') %>
-                </div>
-              <% end %>
-              <div>
-                <div class="font-medium text-lg text-gray-900 dark:text-white"><%= medicine.name %></div>
-                <% days_to_expiry = (medicine.medicine_validity.to_date - Date.today).to_i %>
-                <% if days_to_expiry <= 30 && days_to_expiry > 0 %>
-                  <span class="badge badge-red">
-                    Vence em <%= medicine.medicine_validity.strftime("%d/%m/%Y") %>
-                  </span>
-                <% elsif days_to_expiry <= 0 %>
-                  <span class="badge bg-health-red-500 text-white">
-                    Vencido
-                  </span>
-                <% else %>
-                  <span class="badge badge-green">
-                    Validade: <%= medicine.medicine_validity.strftime("%d/%m/%Y") %>
-                  </span>
-                <% end %>
-              </div>
-            </div>
-            
-            <div class="grid grid-cols-2 gap-2 mb-3">
-              <div class="text-sm">
-                <span class="text-gray-500 dark:text-gray-400">Unidade:</span>
-                <span class="text-gray-900 dark:text-white"><%= medicine.unit %></span>
-              </div>
-              
-              <div class="text-sm">
-                <span class="text-gray-500 dark:text-gray-400">Quantidade:</span>
-                <span class="text-gray-900 dark:text-white"><%= medicine.quantity %></span>
-              </div>
-              
-              <div class="text-sm">
-                <span class="text-gray-500 dark:text-gray-400">Formato:</span>
-                <span class="text-gray-900 dark:text-white">
-                  <% if medicine.is_liquid %>
-                    <span class="flex items-center">
-                      <%= lucide_icon('droplets', class: 'h-3.5 w-3.5 mr-1 text-pharma-blue-500') %>
-                      Líquido
-                    </span>
-                  <% else %>
-                    <span class="flex items-center">
-                      <%= lucide_icon('pill', class: 'h-3.5 w-3.5 mr-1 text-pharma-teal-500') %>
-                      Sólido
-                    </span>
-                  <% end %>
-                </span>
-              </div>
-              
-              <% if current_profile.role == 'admin' %>
-                <div class="text-sm">
-                  <span class="text-gray-500 dark:text-gray-400">Usuário:</span>
-                  <span class="text-gray-900 dark:text-white"><%= medicine.profile.name %></span>
-                </div>
-              <% end %>
-            </div>
-            
-            <% if medicine.symptoms.any? %>
-              <div class="flex flex-wrap gap-1 mb-3">
-                <% medicine.symptoms.each do |symptom| %>
-                  <span class="badge badge-blue">
-                    <%= symptom.name %>
-                  </span>
-                <% end %>
-              </div>
-            <% end %>
-            
-            <div class="flex space-x-2 mt-2">
-              <%= link_to medicine, 
-                        class: "p-2 text-pharma-blue-600 hover:bg-pharma-blue-50 dark:text-pharma-blue-400 dark:hover:bg-gray-700 rounded-full", 
-                        title: "Visualizar",
-                        data: { turbo_frame: "modal" } do %>
-                <%= lucide_icon('eye', class: 'h-5 w-5') %>
-              <% end %>
-              
-              <%= link_to edit_medicine_path(medicine), 
-                        class: "p-2 text-pharma-teal-600 hover:bg-pharma-teal-50 dark:text-pharma-teal-400 dark:hover:bg-gray-700 rounded-full", 
-                        title: "Editar",
-                        data: { turbo_frame: "modal" } do %>
-                <%= lucide_icon('pencil', class: 'h-5 w-5') %>
-              <% end %>
-              
-              <%= link_to medicine, 
-                        method: :delete, 
-                        class: "p-2 text-health-red-600 hover:bg-health-red-50 dark:text-health-red-400 dark:hover:bg-gray-700 rounded-full", 
-                        title: "Excluir",
-                        data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este remédio?" } do %>
-                <%= lucide_icon('trash', class: 'h-5 w-5') %>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-      </div>
+    <% if @expired_medicines.any? || @expiring_soon_medicines.any? || @regular_medicines.any? %>
       
-      <div class="hidden lg:block">
-        <div class="overflow-x-auto">
-          <table class="w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead class="bg-gray-50 dark:bg-gray-700">
-              <tr>
-                <th class="table-header w-1/4">Nome</th>
-                <th class="table-header w-[10%]">Unidade(s)</th>
-                <th class="table-header w-[10%]">É líquido?</th>
-                <th class="table-header w-[10%]">Quantidade</th>
-                <th class="table-header w-[15%]">Validade</th>
-                <th class="table-header w-[15%]">Sintomas</th>
-                <th class="table-header w-[15%]">Usado para</th>
-                <% if current_profile.role == 'admin' %>
-                  <th class="table-header">Usuário</th>
-                <% end %>
-                <th class="table-header w-[10%]">Ações</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              <% @medicines.each do |medicine| %>
-                <tr id="<%= dom_id medicine %>_desktop" class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                  <td class="table-cell">
-                    <div class="flex items-center">
-                      <% if medicine.picture.attached? %>
-                        <div class="flex-shrink-0 h-10 w-10 mr-3">
-                          <%= image_tag url_for(medicine.picture), class: "h-10 w-10 rounded-full object-cover" %>
-                        </div>
-                      <% else %>
-                        <div class="flex-shrink-0 h-10 w-10 bg-pharma-teal-100 text-pharma-teal-600 dark:bg-gray-700 dark:text-pharma-teal-400 rounded-full flex items-center justify-center mr-3">
-                          <%= lucide_icon('pill', class: 'h-5 w-5') %>
-                        </div>
-                      <% end %>
-                      <div class="font-medium text-gray-900 dark:text-white"><%= medicine.name %></div>
-                    </div>
-                  </td>
-                  <td class="table-cell"><%= medicine.unit %></td>
-                  <td class="table-cell">
-                    <% if medicine.is_liquid %>
-                      <span class="badge badge-blue">
-                        <%= lucide_icon('droplets', class: 'h-3.5 w-3.5 mr-1') %>
-                        Líquido
-                      </span>
-                    <% else %>
-                      <span class="badge bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-                        <%= lucide_icon('pill', class: 'h-3.5 w-3.5 mr-1') %>
-                        Sólido
-                      </span>
-                    <% end %>
-                  </td>
-                  <td class="table-cell"><%= medicine.quantity %></td>
-                  <td class="table-cell">
-                    <% days_to_expiry = (medicine.medicine_validity.to_date - Date.today).to_i %>
-                    <% if days_to_expiry <= 30 && days_to_expiry > 0 %>
-                      <span class="badge badge-red">
-                        <%= medicine.medicine_validity.strftime("%d/%m/%Y") %>
-                      </span>
-                    <% elsif days_to_expiry <= 0 %>
-                      <span class="badge bg-health-red-500 text-white">
-                        Vencido
-                      </span>
-                    <% else %>
-                      <span class="badge badge-green">
-                        <%= medicine.medicine_validity.strftime("%d/%m/%Y") %>
-                      </span>
-                    <% end %>
-                  </td>
-                  <td class="table-cell">
-                    <div class="flex flex-wrap gap-1">
-                      <% medicine.symptoms.each do |symptom| %>
-                        <span class="badge badge-blue">
-                          <%= symptom.name %>
-                        </span>
-                      <% end %>
-                      <% if medicine.symptoms.empty? %>
-                        <span class="text-gray-400 dark:text-gray-500 text-xs">Nenhum</span>
-                      <% end %>
-                    </div>
-                  </td>
-                  <td class="table-cell">
-                    <% if medicine.used_to.present? %>
-                      <div class="max-w-xs truncate"><%= medicine.used_to %></div>
-                    <% else %>
-                      <span class="text-gray-400 dark:text-gray-500 text-xs">Não informado</span>
-                    <% end %>
-                  </td>
-                  <% if current_profile.role == 'admin' %>
-                    <td class="table-cell"><%= medicine.profile.name %></td>
-                  <% end %>
-                  <td class="table-cell">
-                    <div class="flex space-x-1">
-                      <%= link_to medicine, 
-                                  class: "p-2 text-pharma-blue-600 hover:bg-pharma-blue-50 dark:text-pharma-blue-400 dark:hover:bg-gray-700 rounded-full", 
-                                  title: "Visualizar",
-                                  data: { turbo_frame: "modal" } do %>
-                        <%= lucide_icon('eye', class: 'h-5 w-5') %>
-                      <% end %>
-                      
-                      <%= link_to edit_medicine_path(medicine), 
-                                  class: "p-2 text-pharma-teal-600 hover:bg-pharma-teal-50 dark:text-pharma-teal-400 dark:hover:bg-gray-700 rounded-full", 
-                                  title: "Editar",
-                                  data: { turbo_frame: "modal" } do %>
-                        <%= lucide_icon('pencil', class: 'h-5 w-5') %>
-                      <% end %>
-                      
-                      <%= link_to medicine, 
-                                  method: :delete, 
-                                  class: "p-2 text-health-red-600 hover:bg-health-red-50 dark:text-health-red-400 dark:hover:bg-gray-700 rounded-full", 
-                                  title: "Excluir",
-                                  data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este remédio?" } do %>
-                        <%= lucide_icon('trash', class: 'h-5 w-5') %>
-                      <% end %>
-                    </div>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+      <% if @expired_medicines.any? %>
+        <div class="py-3 px-4 bg-health-red-50 dark:bg-health-red-900/20 text-health-red-600 dark:text-health-red-400 border-b border-health-red-100 dark:border-gray-700">
+          <div class="flex items-center">
+            <%= lucide_icon('alert-triangle', class: 'h-5 w-5 mr-2') %>
+            <h3 class="font-semibold">Medicamentos Vencidos</h3>
+          </div>
         </div>
-      </div>
+        
+        <div class="lg:hidden">
+          <% @expired_medicines.each do |medicine| %>
+            <%= render partial: "medicine_card", locals: { medicine: medicine } %>
+          <% end %>
+        </div>
+        
+        <div class="hidden lg:block">
+          <div class="overflow-x-auto">
+            <table class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th class="table-header w-1/4">Nome</th>
+                  <th class="table-header w-[10%]">Unidade(s)</th>
+                  <th class="table-header w-[10%]">É líquido?</th>
+                  <th class="table-header w-[10%]">Quantidade</th>
+                  <th class="table-header w-[15%]">Validade</th>
+                  <th class="table-header w-[15%]">Sintomas</th>
+                  <th class="table-header w-[15%]">Usado para</th>
+                  <% if current_profile.role == 'admin' %>
+                    <th class="table-header">Usuário</th>
+                  <% end %>
+                  <th class="table-header w-[10%]">Ações</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                <% @expired_medicines.each do |medicine| %>
+                  <%= render partial: "medicine_row", locals: { medicine: medicine } %>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
+      
+      <% if @expiring_soon_medicines.any? %>
+        <div class="py-3 px-4 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border-b border-amber-100 dark:border-gray-700">
+          <div class="flex items-center">
+            <%= lucide_icon('alert-circle', class: 'h-5 w-5 mr-2') %>
+            <h3 class="font-semibold">Medicamentos Próximos ao Vencimento</h3>
+          </div>
+        </div>
+        
+        <div class="lg:hidden">
+          <% @expiring_soon_medicines.each do |medicine| %>
+            <%= render partial: "medicine_card", locals: { medicine: medicine } %>
+          <% end %>
+        </div>
+        
+        <div class="hidden lg:block">
+          <div class="overflow-x-auto">
+            <table class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th class="table-header w-1/4">Nome</th>
+                  <th class="table-header w-[10%]">Unidade(s)</th>
+                  <th class="table-header w-[10%]">É líquido?</th>
+                  <th class="table-header w-[10%]">Quantidade</th>
+                  <th class="table-header w-[15%]">Validade</th>
+                  <th class="table-header w-[15%]">Sintomas</th>
+                  <th class="table-header w-[15%]">Usado para</th>
+                  <% if current_profile.role == 'admin' %>
+                    <th class="table-header">Usuário</th>
+                  <% end %>
+                  <th class="table-header w-[10%]">Ações</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                <% @expiring_soon_medicines.each do |medicine| %>
+                  <%= render partial: "medicine_row", locals: { medicine: medicine } %>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
+      
+      <% if @regular_medicines.any? %>
+        <div class="py-3 px-4 bg-pharma-teal-50 dark:bg-pharma-teal-900/20 text-pharma-teal-600 dark:text-pharma-teal-400 border-b border-pharma-teal-100 dark:border-gray-700">
+          <div class="flex items-center">
+            <%= lucide_icon('check-circle', class: 'h-5 w-5 mr-2') %>
+            <h3 class="font-semibold">Outros Medicamentos</h3>
+          </div>
+        </div>
+        
+        <div class="lg:hidden">
+          <% @regular_medicines.each do |medicine| %>
+            <%= render partial: "medicine_card", locals: { medicine: medicine } %>
+          <% end %>
+        </div>
+        
+        <div class="hidden lg:block">
+          <div class="overflow-x-auto">
+            <table class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th class="table-header w-1/4">Nome</th>
+                  <th class="table-header w-[10%]">Unidade(s)</th>
+                  <th class="table-header w-[10%]">É líquido?</th>
+                  <th class="table-header w-[10%]">Quantidade</th>
+                  <th class="table-header w-[15%]">Validade</th>
+                  <th class="table-header w-[15%]">Sintomas</th>
+                  <th class="table-header w-[15%]">Usado para</th>
+                  <% if current_profile.role == 'admin' %>
+                    <th class="table-header">Usuário</th>
+                  <% end %>
+                  <th class="table-header w-[10%]">Ações</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                <% @regular_medicines.each do |medicine| %>
+                  <%= render partial: "medicine_row", locals: { medicine: medicine } %>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
+      
     <% else %>
-      <div class="flex flex-col items-center justify-center py-12 px-4 text-center">
-        <%= lucide_icon('pill-off', class: 'h-16 w-16 text-gray-400 mb-4') %>
+      <div class="text-center py-12">
+        <div class="mx-auto w-24 h-24 bg-gray-100 dark:bg-gray-700 text-gray-400 rounded-full flex items-center justify-center mb-4">
+          <%= lucide_icon('pill', class: 'h-12 w-12') %>
+        </div>
         <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nenhum remédio cadastrado</h3>
-        <p class="text-gray-500 dark:text-gray-400 max-w-md mb-6">
-          Cadastre seus medicamentos para organizar sua farmácia pessoal.
+        <p class="text-gray-500 dark:text-gray-400 max-w-sm mx-auto mb-6">
+          Adicione seu primeiro remédio para gerenciar seus medicamentos.
         </p>
         <%= link_to new_medicine_path, 
-                    class: "btn-primary inline-flex items-center", 
-                    data: { turbo_frame: "modal" } do %>
-          <%= lucide_icon('plus', class: 'mr-2 h-5 w-5') %>
-          Cadastrar primeiro remédio
+                  class: "btn-primary inline-flex items-center mx-auto",
+                  data: { turbo_frame: "modal" } do %>
+          <%= lucide_icon('plus', class: 'h-5 w-5 mr-2') %>
+          <span>Cadastrar Remédio</span>
         <% end %>
       </div>
     <% end %>

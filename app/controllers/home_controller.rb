@@ -5,17 +5,16 @@ class HomeController < ApplicationController
     @symptoms = Symptom.ordered
     
     if current_profile.admin?
-      @medicines = Medicine.ordered
-      @expiring_medicines = Medicine.where("medicine_validity <= ?", 30.days.from_now)
-                                   .order(:medicine_validity)
+      medicines_base = Medicine.ordered
     else
-      @medicines = Medicine.by_profile(current_profile.id).ordered
-      @expiring_medicines = current_profile.medicines
-                                        .where("medicine_validity <= ?", 30.days.from_now)
-                                        .order(:medicine_validity)
+      medicines_base = Medicine.by_profile(current_profile.id).ordered
     end
     
+    @expired_medicines = medicines_base.expired
+    @expiring_soon_medicines = medicines_base.expiring_soon.where("medicine_validity >= ?", Date.today)
+    
     # For the view to maintain compatibility
+    @medicines = medicines_base
     @medicine = @medicines
     @symptom = @symptoms
   end
