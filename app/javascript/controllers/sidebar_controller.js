@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["sidebar", "menuText", "logo", "sidebarToggle"]
 
   initialize() {
-    this.isSidebarOpen = false;
+    this.isSidebarOpen = true;
     this.isCompactMode = false;
     
     // Verificar o tamanho da tela ao inicializar
@@ -12,56 +12,40 @@ export default class extends Controller {
     
     // Adicionar listener para alterações no tamanho da tela
     window.addEventListener('resize', this.checkScreenSize.bind(this));
-    
-    // Registrar no log para depuração
-    console.log("Sidebar controller initialized");
-  }
-
-  connect() {
-    console.log("Sidebar controller connected");
   }
 
   disconnect() {
     window.removeEventListener('resize', this.checkScreenSize.bind(this));
   }
 
+  // Alternar entre modo compacto e normal, ou mostrar/esconder a sidebar dependendo do tamanho da tela
   toggle(event) {
-    // Log para depuração do botão do menu mobile
-    console.log("Toggle clicked", window.innerWidth);
+    if (event) {
+      event.preventDefault();
+    }
     
-    // Interrompe a propagação e comportamento padrão
-    event.preventDefault();
-    event.stopPropagation();
+    const width = window.innerWidth;
     
-    // Em dispositivos móveis, apenas abre e fecha a sidebar
-    if (window.innerWidth < 1024) {
-      console.log("Mobile toggle", this.isSidebarOpen);
-      
-      if (this.isSidebarOpen) {
-        this.closeSidebar();
-      } else {
-        this.openSidebar();
-      }
-    } else {
-      // Em dispositivos maiores, alterna o modo compacto
+    // Em tablets (768-1024px) e desktop (>1024px), alternar o modo compacto
+    if (width >= 768) {
       this.toggleCompactMode();
+    } 
+    // Em mobile (<768px), apenas mostrar/esconder a sidebar
+    else {
+      this.toggleVisibility();
     }
   }
   
-  // Método específico para abrir a sidebar no mobile
-  openSidebar() {
-    console.log("Opening sidebar");
-    this.sidebarTarget.classList.remove('-translate-x-full');
-    this.isSidebarOpen = true;
-  }
-  
-  // Método específico para fechar a sidebar no mobile
-  closeSidebar() {
-    console.log("Closing sidebar");
-    this.sidebarTarget.classList.add('-translate-x-full');
-    this.isSidebarOpen = false;
+  // Alternar a visibilidade da sidebar (mostrar/esconder)
+  toggleVisibility() {
+    if (this.sidebarTarget.classList.contains('-translate-x-full')) {
+      this.sidebarTarget.classList.remove('-translate-x-full');
+    } else {
+      this.sidebarTarget.classList.add('-translate-x-full');
+    }
   }
 
+  // Alternar entre modo compacto e normal
   toggleCompactMode() {
     // Quando a sidebar está expandida
     if (this.sidebarTarget.classList.contains('w-50')) {
@@ -69,7 +53,7 @@ export default class extends Controller {
       this.sidebarTarget.classList.remove('w-50');
       this.sidebarTarget.classList.add('w-16');
       
-      // Oculta os textos do menu, mas deixa os ícones visíveis
+      // Oculta os textos do menu
       this.menuTextTargets.forEach(el => {
         el.classList.add('hidden');
       });
@@ -79,9 +63,8 @@ export default class extends Controller {
         this.logoTarget.classList.add('mx-auto');
       }
       
-      // Rotaciona o ícone do toggle para indicar expansão
+      // Rotaciona o ícone do toggle
       if (this.hasSidebarToggleTarget) {
-        this.sidebarToggleTarget.classList.remove('rotate-0');
         this.sidebarToggleTarget.classList.add('rotate-180');
       }
       
@@ -101,10 +84,9 @@ export default class extends Controller {
         this.logoTarget.classList.remove('mx-auto');
       }
       
-      // Rotaciona o ícone do toggle para indicar compactação
+      // Rotaciona o ícone do toggle
       if (this.hasSidebarToggleTarget) {
         this.sidebarToggleTarget.classList.remove('rotate-180');
-        this.sidebarToggleTarget.classList.add('rotate-0');
       }
       
       this.isCompactMode = false;
@@ -112,14 +94,15 @@ export default class extends Controller {
   }
   
   checkScreenSize() {
-    if (window.innerWidth < 1024) {
-      // Para dispositivos móveis, esconde a sidebar inicialmente
+    const width = window.innerWidth;
+    
+    // Para mobile, a sidebar fica escondida inicialmente
+    if (width < 768) {
       this.sidebarTarget.classList.add('-translate-x-full');
-      this.isSidebarOpen = false;
-    } else {
-      // Para desktop, mantém a sidebar visível
+    } 
+    // Para tablets e desktop, a sidebar fica visível inicialmente
+    else {
       this.sidebarTarget.classList.remove('-translate-x-full');
-      this.isSidebarOpen = true;
     }
   }
 }
