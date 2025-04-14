@@ -41,7 +41,6 @@
   </div>
 
   <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 flex justify-end space-x-3">
-    <%= link_to "Cancelar", members_path, class: "btn-secondary inline-flex items-center" %>
     <%= form.button :submit, 
                   @member.new_record? ? "Cadastrar Membro" : "Atualizar Membro", 
                   class: "btn-primary inline-flex items-center" %>

@@ -35,7 +35,6 @@
   </div>
 
   <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 flex justify-end space-x-3">
-    <%= link_to "Cancelar", symptoms_path, class: "btn-secondary inline-flex items-center" %>
     <%= form.button :submit, 
                   @symptom.new_record? ? "Cadastrar Sintoma" : "Atualizar Sintoma", 
                   class: "btn-primary inline-flex items-center" %>
