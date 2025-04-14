@@ -16,6 +16,50 @@
   .dark body {
     @apply text-gray-100;
   }
+
+  /* Para Chrome, Edge e Safari */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #0d9488; /* cor teal-600 para combinar com a sidebar */
+    border-radius: 4px;
+    transition: background 0.3s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0f766e; /* cor teal-700 para hover */
+  }
+
+  /* Para Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #0d9488 #f1f1f1;
+  }
+  
+  /* Versão escura para o tema dark */
+  .dark ::-webkit-scrollbar-track {
+    background: #1e293b; /* cor slate-800 para o tema escuro */
+  }
+  
+  .dark ::-webkit-scrollbar-thumb {
+    background: #0f766e; /* cor teal-700 */
+  }
+  
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #115e59; /* cor teal-800 */
+  }
+  
+  .dark * {
+    scrollbar-color: #0f766e #1e293b;
+  }
 }
 
 @layer components {

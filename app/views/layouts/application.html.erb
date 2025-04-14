@@ -14,17 +14,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <%= javascript_importmap_tags %>
     
-    <!-- Adicionando JavaScript inline para garantir que o menu funcione em dispositivos móveis -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        // Encontra o botão de menu móvel
         const mobileMenuBtn = document.getElementById('mobileSidebarToggle');
-        // Encontra a sidebar
         const sidebar = document.querySelector('[data-sidebar-target="sidebar"]');
-        // Encontra o container do botão mobile
         const menuButtonContainer = document.querySelector('#menuButtonContainer');
         
-        // Adiciona um listener de clique explícito
         if (mobileMenuBtn && sidebar) {
           mobileMenuBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -33,17 +28,14 @@
           });
         }
         
-        // Função para verificar o tamanho da tela e esconder o menu hambúrguer em tamanhos intermediários
         function checkScreenSize() {
           const width = window.innerWidth;
           
-          // Esconder o botão de menu móvel em tamanhos intermediários (tablet)
           if (width >= 768 && width < 1024) {
             if (menuButtonContainer) {
               menuButtonContainer.classList.add('hidden');
             }
           } else if (width < 768) { 
-            // Em mobile mostra o botão
             if (menuButtonContainer) {
               menuButtonContainer.classList.remove('hidden');
             }
@@ -53,10 +45,8 @@
           }
         }
         
-        // Verificar ao carregar
         checkScreenSize();
         
-        // Verificar ao redimensionar
         window.addEventListener('resize', checkScreenSize);
       });
     </script>
@@ -110,7 +100,6 @@
               <% end %>
             <% end %>
             
-            <!-- Botão de Sair - adicionado na navegação principal para ter o mesmo estilo dos outros itens -->
             <div class="mt-auto border-t border-teal-700 dark:border-slate-700">
               <%= link_to destroy_profile_session_path, method: :delete, class: "mt-4 block py-3 px-4 rounded-lg transition duration-200 hover:bg-teal-700 dark:hover:bg-slate-700 mb-2 flex items-center", data: { turbo_method: :delete } do %>
                 <%= lucide_icon('log-out', class: 'h-5 w-5 mr-3 flex-shrink-0') %>
@@ -119,7 +108,6 @@
             </div>
           </nav>
           
-          <!-- Botão toggle no canto inferior esquerdo absolutamente posicionado -->
           <div class="absolute bottom-3 left-3 z-10">
             <button 
               data-action="click->sidebar#toggle" 
@@ -133,7 +121,6 @@
         </aside>
 
         <div class="flex-1 flex flex-col overflow-hidden">
-          <!-- Header -->
           <header class="bg-white dark:bg-gray-800 shadow-sm py-3 px-6 flex justify-between items-center">
             <div id="menuButtonContainer" class="flex items-center lg:hidden">
               <button 
@@ -163,7 +150,6 @@
             </div>
           </header>
 
-          <!-- Main content -->
           <main class="flex-1 overflow-auto p-6 bg-gray-50 dark:bg-gray-900">
             <%= rails_toastify_container %>
             <%= rails_toastify_script %>
@@ -175,7 +161,6 @@
       </div>
 
       <script>
-        // Script para fechar a sidebar quando o botão X é clicado
         document.addEventListener('DOMContentLoaded', function() {
           const closeBtn = document.getElementById('closeSidebarBtn');
           const sidebar = document.querySelector('[data-sidebar-target="sidebar"]');
